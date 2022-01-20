@@ -2935,7 +2935,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BulletPrefab: {fileID: 871191927428410993, guid: 48049a7045a76c743bb1cc1979622b52, type: 3}
-  m_BodyCellPrefab: {fileID: 2108867128888498759, guid: f7fed34d5948b8541b4ec2206aaab731, type: 3}
   m_RagdollModelPrefab: {fileID: 1731515874, guid: 5029d2538ab8cb9419307819ca9a7d38, type: 3}
   m_TimeManager: {fileID: 1398554967}
   m_EnemySpawner: {fileID: 1777991619}

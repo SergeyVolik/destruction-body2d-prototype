@@ -9,7 +9,6 @@ namespace Prototype
     {
        
         [SerializeField] private Bullet m_BulletPrefab;
-        [SerializeField] private BodyCellNode m_BodyCellPrefab;
         [SerializeField] private RagdollModel m_RagdollModelPrefab;
         [SerializeField] private SlowmotionManager m_TimeManager;
         [SerializeField] private EnemySpawner m_EnemySpawner;
@@ -27,11 +26,6 @@ namespace Prototype
               .FromComponentInNewPrefab(m_BulletPrefab)
               .WithGameObjectName("Bullet")
               .UnderTransformGroup("Bullets");
-
-            Container.BindFactory<BodyCellNode, BodyCellNode.Factory>()
-                .FromComponentInNewPrefab(m_BodyCellPrefab)
-                .WithGameObjectName("BodyCell")
-                .UnderTransformGroup("BodyCells");
 
             Container.BindFactory<RagdollModel, RagdollModel.Factory>()
                 .FromComponentInNewPrefab(m_RagdollModelPrefab)

@@ -6,10 +6,15 @@ namespace Prototype
 {
     public class BodyCellNode : MonoBehaviour, IDamageable
     {
-        private BodyCellNode m_TopCell;
-        private BodyCellNode m_BottomCell;
-        private BodyCellNode m_LeftCell;
-        private BodyCellNode m_RightCell;
+        [SerializeField]
+        public BodyCellNode m_TopCell;
+        [SerializeField]
+        public BodyCellNode m_BottomCell;
+        [SerializeField]
+        public BodyCellNode m_LeftCell;
+        [SerializeField]
+        public BodyCellNode m_RightCell;
+
 
         private HealthHandler m_Health;
         private SpriteRenderer m_SpriteRenderer;
@@ -45,10 +50,6 @@ namespace Prototype
         }
 
 
-        bool Damaged = false;
-
-
-
         private void ApplayDamageToNode(BodyCellNode node, int dmg, Vector3 damagePos)
         {
             if (node)
@@ -79,7 +80,6 @@ namespace Prototype
                 return;
 
             int dmg = (int)(damage / horizontalDepth);
-            Damaged = true;
 
             horizontalDepth++;
 
@@ -106,7 +106,6 @@ namespace Prototype
             PopulateDamage(damage, 1, 1, damagePos, true);
         }
 
-        public class Factory : PlaceholderFactory<BodyCellNode> { }
 
         void KillWithDelay()
         {
