@@ -26,19 +26,31 @@ namespace Prototype
         }
 
         bool dead = false;
-        private void OnCollisionEnter2D(Collision2D collision)
-        {
+        //private void OnCollisionEnter2D(Collision2D collision)
+        //{
             
-            if (!dead && collision.collider.TryGetComponent<IDamageable>(out var damagable))
-            {
-                dead = true;
-                Debug.Log(m_RB.velocity.magnitude);
-                damagable.ApplyDamage((int)(speed * m_Settings.bulletDamageMult));
-                Destroy(gameObject);
+        //    if (!dead && collision.collider.TryGetComponent<IDamageable>(out var damagable))
+        //    {
+        //        dead = true;
+        //        Debug.Log(m_RB.velocity.magnitude);
+        //        damagable.ApplyDamage((int)(speed * m_Settings.bulletDamageMult));
+        //        Destroy(gameObject);
 
-            }
+        //    }
 
            
+        //}
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.TryGetComponent<IDamageable>(out var damagable))
+            {
+                damagable.ApplyDamage((int)(speed * m_Settings.bulletDamageMult));
+                speed -= 100;
+                m_RB.velocity *= 0.8f;
+                Debug.Log(m_RB.velocity);
+
+            }
         }
 
         public class Factory : PlaceholderFactory<Bullet> { }

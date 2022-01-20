@@ -64,6 +64,7 @@ namespace Prototype
                     node.m_Rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
                     node.m_Rigidbody2D.AddForce(forceVector.normalized * 200);
                     node.m_Collider2D.enabled = false;
+                    node.transform.parent = null;
                     node.KillWithDelay();
                 }
             }

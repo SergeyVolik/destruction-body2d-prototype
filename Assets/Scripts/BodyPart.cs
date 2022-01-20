@@ -24,7 +24,8 @@ namespace Prototype
         private void Start()
         {
             Setup();
-            m_BoxCollider2D.enabled = false;
+            //m_BoxCollider2D.enabled = false;
+            
         }
 
 
@@ -39,20 +40,23 @@ namespace Prototype
 
         private void CreateNodes()
         {
-            m_Renderer.color = Color.gray;
-            var bounds = m_BoxCollider2D.bounds;
-
+            
+            var savedRot = transform.rotation;
+            transform.rotation = Quaternion.identity;
+            m_Renderer.ResetBounds();
+            var bounds = m_Renderer.bounds;
 
             float size = m_CellsSettings.cellSize;
             var cellSize = new Vector3(size, size, 1);
             int horizonalCellsNumber = Mathf.CeilToInt(bounds.size.x / size);
             int verticalCellsNumber = Mathf.CeilToInt(bounds.size.y / size);
 
-            float startOffset = size / 2;
+            float startOffset = size/2;
             var minPosWithOffset = new Vector3(bounds.min.x + startOffset, bounds.min.y + startOffset, 0);
             float moveOffset = size;
 
             Nodes = new BodyCellNode[horizonalCellsNumber, verticalCellsNumber];
+
             for (int i = 0; i < horizonalCellsNumber; i++)
             {
                 for (int j = 0; j < verticalCellsNumber; j++)
@@ -60,11 +64,15 @@ namespace Prototype
                     var cell = m_BodyCellFactory.Create();
                     cell.transform.position = new Vector3(minPosWithOffset.x + moveOffset * i, minPosWithOffset.y + moveOffset * j, 0);
                     cell.transform.localScale = cellSize;
-
+                    cell.transform.rotation = transform.rotation;
+                    cell.transform.parent = transform;
                     Nodes[i, j] = cell;
 
                 }
             }
+
+            transform.rotation = savedRot;
+            m_Renderer.enabled = false;
         }
 
         private void ConnectNodes()
