@@ -7,29 +7,40 @@ namespace Prototype
 {
     public class BodyPart : MonoBehaviour
     {
+        private BodyCellNode.Factory m_BodyCellFactory;
+        private CellsSettings m_CellsSettings;
+        private BoxCollider2D m_BoxCollider2D;
+        private Rigidbody2D m_Rigidbody2D;
+        private SpriteRenderer m_Renderer;
+        private RagdollModel m_RagdollModel;
+        public Rigidbody2D Rigidbody2D => m_Rigidbody2D;
 
-        BodyCellNode.Factory m_BodyCellFactory;
-        CellsSettings m_CellsSettings;
-        BoxCollider2D m_BoxCollider2D;
-        SpriteRenderer m_Renderer;
+        private BodyCellNode[,] Nodes;
         [Inject]
-        void Construct(BodyCellNode.Factory bodyCellFactory, CellsSettings settings, BoxCollider2D boxCollider, SpriteRenderer renderer)
+        void Construct(
+            BodyCellNode.Factory bodyCellFactory,
+            CellsSettings settings,
+            BoxCollider2D boxCollider,
+            SpriteRenderer renderer,
+            Rigidbody2D rigidbody2D,
+            RagdollModel ragdollModel)
         {
             m_BodyCellFactory = bodyCellFactory;
             m_CellsSettings = settings;
             m_BoxCollider2D = boxCollider;
             m_Renderer = renderer;
+            m_Rigidbody2D = rigidbody2D;
+            m_RagdollModel = ragdollModel;
 
         }
         private void Start()
         {
             Setup();
-            //m_BoxCollider2D.enabled = false;
             
         }
 
 
-        BodyCellNode[,] Nodes;
+
 
         public void Setup()
         {
@@ -73,6 +84,21 @@ namespace Prototype
 
             transform.rotation = savedRot;
             m_Renderer.enabled = false;
+        }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+
+            if (collision.TryGetComponent<Bullet>(out _))
+            {
+                m_RagdollModel.Activate();
+                var vector = (transform.position - collision.transform.position).normalized;
+                Debug.Log($"{vector} push body part");
+                Rigidbody2D.AddForce(vector* m_RagdollModel.Settings.bodyPushForce, ForceMode2D.Impulse);
+
+                
+            }
+ 
         }
 
         private void ConnectNodes()

@@ -11,18 +11,19 @@ namespace Prototype
     {
         private Rigidbody2D m_RB;
         private ShootingSettings m_Settings;
-
+        private SlowmotionManager m_TimeManager;
         public float speed;
         public void Push(Vector2 vector)
         {
-            m_RB.AddForce(vector);
+            m_RB.AddForce(vector, ForceMode2D.Impulse);
         }
 
         [Inject]
-        void Construct(ShootingSettings settings, Rigidbody2D rb)
+        void Construct(ShootingSettings settings, Rigidbody2D rb, SlowmotionManager timeManager)
         {
             m_RB = rb;
             m_Settings = settings;
+            m_TimeManager = timeManager;
         }
 
         bool dead = false;
@@ -45,11 +46,8 @@ namespace Prototype
         {
             if (collision.TryGetComponent<IDamageable>(out var damagable))
             {
-                damagable.ApplyDamage((int)(speed * m_Settings.bulletDamageMult));
-                speed -= 100;
-                m_RB.velocity *= 0.8f;
-                Debug.Log(m_RB.velocity);
-
+                damagable.ApplyDamage((int)(speed * m_Settings.bulletDamageMult), transform.position);
+                m_TimeManager.DoSlowmotion();
             }
         }
 

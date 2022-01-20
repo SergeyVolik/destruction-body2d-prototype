@@ -42,7 +42,6 @@ namespace Prototype
             m_Rigidbody2D = rb;
 
             health.Init(settings.maxHealth);
-            //spriteRenderer.color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
         }
 
 
@@ -55,86 +54,56 @@ namespace Prototype
             if (node)
             {
                 node.m_Health.ApplyDamage(dmg);
-                node.m_SpriteRenderer.color = Color.Lerp(m_CellSettings.minHealthColor, m_CellSettings.maxHealthColor, node.m_Health.Health / (float)node.m_Health.MaxHealth);
+               
 
                 if (node.m_Health.IsDead)
                 {
                     var forceVector = node.transform.position - damagePos;
-                    forceVector = new Vector3(forceVector.x + Random.Range(-0.1f, 0.1f), forceVector.y + Random.Range(-0.1f, 0.1f), forceVector.z);
                     node.m_Rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
-                    node.m_Rigidbody2D.AddForce(forceVector.normalized * 200);
+                    node.m_Rigidbody2D.AddForce(forceVector.normalized * m_CellSettings.pushCellForce, ForceMode2D.Impulse);
                     node.m_Collider2D.enabled = false;
                     node.transform.parent = null;
                     node.KillWithDelay();
+                    Color.Lerp(m_CellSettings.minHealthColor, m_CellSettings.maxHealthColor, Random.Range(0, 1f));
+                    return;
                 }
+
+                node.m_SpriteRenderer.color = Color.Lerp(m_CellSettings.minHealthColor, m_CellSettings.maxHealthColor, node.m_Health.Health / (float)node.m_Health.MaxHealth);
             }
         }
         public void PopulateDamage(int damage, int horizontalDepth, int verticalDepth, Vector3 damagePos, bool horizontal)
         {
-         
 
-           
+
+            if (horizontalDepth == 4)
+                return;
 
             int dmg = (int)(damage / horizontalDepth);
             Damaged = true;
 
             horizontalDepth++;
 
-         
-
-            //m_LeftCell?.PopulateDamage(dmg, horizontalDepth, verticalDepth, damagePos, horizontal);
-            m_RightCell?.PopulateDamage(dmg, horizontalDepth, verticalDepth, damagePos, horizontal);
-
-
-            PopulateTopDamage(m_TopCell, dmg, 1, damagePos);
-            PopulateBottomDamage(m_BottomCell, dmg, 1, damagePos);
+        
             ApplayDamageToNode(this, dmg, damagePos);
 
+            m_TopCell?.PopulateDamage(25, horizontalDepth, verticalDepth, damagePos, horizontal);
+            m_BottomCell?.PopulateDamage(25, horizontalDepth, verticalDepth, damagePos, horizontal);
+            m_LeftCell?.PopulateDamage(25, horizontalDepth, verticalDepth, damagePos, horizontal);
+            m_RightCell?.PopulateDamage(25, horizontalDepth, verticalDepth, damagePos, horizontal);
+
         }
 
-        public void PopulateTopDamage(BodyCellNode topNode, int damage, int verticalDepth, Vector3 damagePos)
-        {
 
-
-            if (verticalDepth > 3 || topNode == null)
-            {
-                if (damage > 50)
-                    topNode?.ApplayDamageToNode(this, 50, damagePos);
-                return;
-            }
-
-            topNode.ApplayDamageToNode(this, damage, damagePos);
-            verticalDepth++;
-
-            topNode.PopulateTopDamage(topNode.m_TopCell, damage / verticalDepth, verticalDepth, damagePos);
-        }
-
-        public void PopulateBottomDamage(BodyCellNode topNode, int damage, int verticalDepth, Vector3 damagePos)
-        {
-
-            if (verticalDepth > 3 || topNode == null)
-            {
-                if(damage > 50)
-                    topNode?.ApplayDamageToNode(this, 50, damagePos);
-
-                return;
-            }
-
-            topNode.ApplayDamageToNode(this, damage, damagePos);
-            verticalDepth++;
-
-            topNode.PopulateBottomDamage(topNode.m_BottomCell, damage / verticalDepth, verticalDepth, damagePos);
-        }
 
 
         void Update()
         {
-            Damaged = false;
+
         }
 
-        public void ApplyDamage(int damage)
+        public void ApplyDamage(int damage, Vector3 damagePos)
         {
-            PopulateDamage(damage, 1, 1, transform.position, true);
+            PopulateDamage(damage, 1, 1, damagePos, true);
         }
 
         public class Factory : PlaceholderFactory<BodyCellNode> { }
