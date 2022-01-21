@@ -37,6 +37,10 @@ namespace Prototype
                 enemy.gameObject.SetActive(false);
                 preloaded.Add(enemy);
             }
+
+            SpawnEnemy();
+            SpawnEnemy();
+            SpawnEnemy();
         }
         List<RagdollModel> preloaded = new List<RagdollModel>();
         public void SpawnEnemy()

@@ -19,6 +19,7 @@ namespace Prototype
         [SerializeField] private Rigidbody2D m_Rigidbody2D;
 
         public HealthHandler Health => m_Health;
+        public Rigidbody2D Rigidbody2D => m_Rigidbody2D;
 
         public BodyPart BodyPart;
 
@@ -47,7 +48,7 @@ namespace Prototype
                     var forceVector = node.transform.position - damagePos;
                     node.m_Rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
                     node.m_Rigidbody2D.AddForce(forceVector.normalized * m_CellSettings.pushCellForce, ForceMode2D.Impulse);
-                    //node.m_Collider2D.enabled = false;
+                    //node.m_Collider2D.isTrigger = false;
                     node.transform.parent = null;
                     node.KillWithDelay();
                     Color.Lerp(m_CellSettings.minHealthColor, m_CellSettings.maxHealthColor, Random.Range(0, 1f));

@@ -87,7 +87,7 @@ namespace Prototype
                 return;
 
             node.ApplayDamageToNode(node,  100, node.transform.position);
-
+            node.Rigidbody2D.velocity = Rigidbody2D.velocity;
             KillLeft(node.m_LeftCell);
             KillRight(node.m_RightCell);
 
@@ -100,7 +100,7 @@ namespace Prototype
                 return;
 
             node.ApplayDamageToNode(node, 100, node.transform.position);
-
+            node.Rigidbody2D.velocity = Rigidbody2D.velocity;
             KillLeft(node.m_LeftCell);
             KillRight(node.m_RightCell);
 
@@ -114,7 +114,7 @@ namespace Prototype
                 return;
 
             node.ApplayDamageToNode(node, 100, node.transform.position);
-
+            node.Rigidbody2D.velocity = Rigidbody2D.velocity;
             KillLeft(node.m_LeftCell);
         }
         private void KillRight(BodyCellNode node)
@@ -125,7 +125,7 @@ namespace Prototype
                 return;
 
             node.ApplayDamageToNode(node, 100, node.transform.position);
-
+            node.Rigidbody2D.velocity = Rigidbody2D.velocity;
             KillRight(node.m_RightCell);
         }
         bool IsBodySliced(BodyCellNode node)
