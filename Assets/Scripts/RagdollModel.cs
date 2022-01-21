@@ -26,14 +26,23 @@ namespace Prototype
                 m_BodyParts[i].Rigidbody2D.gravityScale = 4;
             }
         }
+
+        bool Activated;
         public void Activate()
         {
-            if(m_Animator)
+            if (Activated)
+                return;
+
+            Activated = true;
+
+            if (m_Animator)
                 m_Animator.enabled = false;
 
             for (int i = 0; i < m_BodyParts.Length; i++)
             {
                 m_BodyParts[i].Rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+                if (m_BodyParts[i].Joint && m_BodyParts[i].Joint.connectedBody)
+                    m_BodyParts[i].Joint.enabled = true;
             }
             StartCoroutine(DestroyWithTime());
         }

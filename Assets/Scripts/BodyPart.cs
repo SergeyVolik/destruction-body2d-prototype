@@ -5,6 +5,13 @@ using Zenject;
 
 namespace Prototype
 {
+    public enum KillCellsDirection
+    {
+        Left,
+        Right,
+        Up,
+        Down
+    }
 
     [RequireComponent(typeof(BoxCollider2D))]
     [RequireComponent(typeof(Rigidbody2D))]
@@ -15,14 +22,16 @@ namespace Prototype
         private BoxCollider2D m_BoxCollider2D;
         private Rigidbody2D m_Rigidbody2D;
         private SpriteRenderer m_Renderer;
+        private HingeJoint2D m_Joint;
         private RagdollModel m_RagdollModel;
         public Rigidbody2D Rigidbody2D => m_Rigidbody2D;
-
+        public HingeJoint2D Joint => m_Joint;
 
         [SerializeField] public BodyCellNode[,] BodyCells;
         [SerializeField] private List<HingeJoint2D> m_SliceJoints;
         [SerializeField] private bool m_CheckSliceHirozontal;
-        [SerializeField] private bool m_KillSlicedCellsToDown;
+
+        [SerializeField] private KillCellsDirection m_KillCellsDirection;
         [Inject]
         void Construct(
             CellsSettings settings,
@@ -39,7 +48,10 @@ namespace Prototype
 
         }
 
-
+        private void Awake()
+        {
+            m_Joint = GetComponent<HingeJoint2D>();
+        }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
@@ -55,7 +67,7 @@ namespace Prototype
  
         }
 
-
+      
         public void BodySliced(BodyCellNode node)
         {
             if (IsBodySliced(node))
@@ -74,14 +86,35 @@ namespace Prototype
 
         public void KillSlicedCells(BodyCellNode node)
         {
-            if(m_KillSlicedCellsToDown)
-                KillDown(node);
-            else
-                KillUp(node);
+            switch (m_KillCellsDirection)
+            {
+                case KillCellsDirection.Left:
+                    KillLeftEntry(node);
+                    break;
+                case KillCellsDirection.Right:
+                    KillRightEntry(node);
+                    break;
+                case KillCellsDirection.Up:
+                    KillUpEntry(node);
+                    break;
+                case KillCellsDirection.Down:
+                    KillDownEntry(node);
+                    break;
+                default:
+                    break;
+            }
+
 
         }
+        private void KillLeftEntry(BodyCellNode node)
+        {
 
-        private void KillDown(BodyCellNode node)
+        }
+        private void KillRightEntry(BodyCellNode node)
+        {
+
+        }
+        private void KillDownEntry(BodyCellNode node)
         {
             if (node == null)
                 return;
@@ -91,10 +124,10 @@ namespace Prototype
             KillLeft(node.m_LeftCell);
             KillRight(node.m_RightCell);
 
-            KillDown(node.m_BottomCell);
+            KillDownEntry(node.m_BottomCell);
         }
 
-        private void KillUp(BodyCellNode node)
+        private void KillUpEntry(BodyCellNode node)
         {
             if (node == null)
                 return;
@@ -104,7 +137,7 @@ namespace Prototype
             KillLeft(node.m_LeftCell);
             KillRight(node.m_RightCell);
 
-            KillUp(node.m_TopCell);
+            KillUpEntry(node.m_TopCell);
         }
         private void KillLeft(BodyCellNode node)
         {

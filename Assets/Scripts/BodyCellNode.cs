@@ -36,6 +36,11 @@ namespace Prototype
             m_RightCell = right;
         }
 
+        IEnumerator ActivateBoxCollider(BodyCellNode node)
+        {
+            yield return new WaitForSeconds(0.1f);
+            node.m_Collider2D.isTrigger = false;
+        }
         public void ApplayDamageToNode(BodyCellNode node, int dmg, Vector3 damagePos)
         {
             if (node)
@@ -48,7 +53,7 @@ namespace Prototype
                     var forceVector = node.transform.position - damagePos;
                     node.m_Rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
                     node.m_Rigidbody2D.AddForce(forceVector.normalized * m_CellSettings.pushCellForce, ForceMode2D.Impulse);
-                    //node.m_Collider2D.isTrigger = false;
+                    StartCoroutine(ActivateBoxCollider(node));
                     node.transform.parent = null;
                     node.KillWithDelay();
                     Color.Lerp(m_CellSettings.minHealthColor, m_CellSettings.maxHealthColor, Random.Range(0, 1f));
