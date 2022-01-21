@@ -11,25 +11,34 @@ namespace Prototype
     [CustomEditor(typeof(BodyPart))]
     public class BodyPartEditor : Editor
     {
+        private const string SETUP_BODY_CELLS = "Setup body cells";
+        private const string CLEAR_BODY_CELLS = "Clear body cells";
+
         public override void OnInspectorGUI()
         {
-            BodyPart mp = (BodyPart)target;
+            base.OnInspectorGUI();
+            BodyPart bodyPart = (BodyPart)target;
 
-            if (GUILayout.Button("Setup body cells"))
+            if (GUILayout.Button(SETUP_BODY_CELLS))
             {
-                Debug.Log("Setup");
+                Debug.Log(SETUP_BODY_CELLS);
 
-                //GameObject go = new GameObject("Test");
-                //go.transform.parent = mp.transform;
-                ClearPrevCells(mp.transform);
-                CreateNodes(mp.transform);
-                ConnectNodes();
+                ClearPrevCells(bodyPart);
+                CreateNodes(bodyPart);
+                ConnectNodes(bodyPart);
+            }
+
+            if (GUILayout.Button(CLEAR_BODY_CELLS))
+            {
+                Debug.Log(CLEAR_BODY_CELLS);
+
+                ClearPrevCells(bodyPart);
             }
         }
 
-        void ClearPrevCells(Transform transform)
+        void ClearPrevCells(BodyPart bodypart)
         {
-            var cells = transform.GetComponentsInChildren<BodyCellNode>();
+            var cells = bodypart.GetComponentsInChildren<BodyCellNode>();
 
             for (int i = 0; i < cells.Length; i++)
             {
@@ -37,14 +46,13 @@ namespace Prototype
             }
         }
 
-        private BodyCellNode[,] Nodes;
-        private void CreateNodes(Transform transform)
+        private void CreateNodes(BodyPart bodypart)
         {
+            var bodyPartTransform = bodypart.transform;
+            var savedRot = bodyPartTransform.rotation;
+            bodyPartTransform.rotation = Quaternion.identity;
 
-            var savedRot = transform.rotation;
-            transform.rotation = Quaternion.identity;
-
-            var m_Renderer = transform.GetComponent<SpriteRenderer>();
+            var m_Renderer = bodypart.GetComponent<SpriteRenderer>();  
             m_Renderer.ResetBounds();
             var bounds = m_Renderer.bounds;
 
@@ -57,7 +65,7 @@ namespace Prototype
             var minPosWithOffset = new Vector3(bounds.min.x + startOffset, bounds.min.y + startOffset, 0);
             float moveOffset = size;
 
-            Nodes = new BodyCellNode[horizonalCellsNumber, verticalCellsNumber];
+            bodypart.BodyCells = new BodyCellNode[horizonalCellsNumber, verticalCellsNumber];
             var prefab = Resources.Load<GameObject>("BodyCell");
             for (int i = 0; i < horizonalCellsNumber; i++)
             {
@@ -67,21 +75,22 @@ namespace Prototype
                     var  cell = obj.GetComponent<BodyCellNode>();
                     cell.transform.position = new Vector3(minPosWithOffset.x + moveOffset * i, minPosWithOffset.y + moveOffset * j, 0);
                     cell.transform.localScale = cellSize;
-                    cell.transform.rotation = transform.rotation;
-                    cell.transform.parent = transform;
-                    Nodes[i, j] = cell;
+                    cell.transform.rotation = bodyPartTransform.rotation;
+                    cell.transform.parent = bodyPartTransform;
+                    cell.BodyPart = bodypart;
+                    bodypart.BodyCells[i, j] = cell;
 
                 }
             }
 
-            transform.rotation = savedRot;
+            bodyPartTransform.rotation = savedRot;
             m_Renderer.enabled = false;
         }
 
-        private void ConnectNodes()
+        private void ConnectNodes(BodyPart bodypart)
         {
-            var height = Nodes.GetLength(0);
-            var width = Nodes.GetLength(1);
+            var height = bodypart.BodyCells.GetLength(0);
+            var width = bodypart.BodyCells.GetLength(1);
 
             for (int i = 0; i < height; i++)
             {
@@ -99,16 +108,16 @@ namespace Prototype
                     var leftIndex = j - 1;
 
                     if (rightIndex < width)
-                        top = Nodes[i, rightIndex];
+                        top = bodypart.BodyCells[i, rightIndex];
                     if (leftIndex >= 0)
-                        bottom = Nodes[i, leftIndex];
+                        bottom = bodypart.BodyCells[i, leftIndex];
 
                     if (topIndex < height)
-                        right = Nodes[topIndex, j];
+                        right = bodypart.BodyCells[topIndex, j];
                     if (bottomIndex >= 0)
-                        left = Nodes[bottomIndex, j];
+                        left = bodypart.BodyCells[bottomIndex, j];
 
-                    Nodes[i, j].ConnectCells(right, left, bottom, top);
+                    bodypart.BodyCells[i, j].ConnectCells(right, left, bottom, top);
 
                 }
             }

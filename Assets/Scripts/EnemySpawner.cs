@@ -14,6 +14,7 @@ namespace Prototype
         [SerializeField] private Transform m_SpawnPoint2;
         [SerializeField] private Transform m_SpawnPoint3;
 
+        [SerializeField] private int preloadedEnemies = 10;
 
         RagdollModel enemy1;
         RagdollModel enemy2;
@@ -24,23 +25,46 @@ namespace Prototype
         void Construct(RagdollModel.Factory ragdollFactory)
         {
             m_RagdollFactory = ragdollFactory;
+
+          
         }
+
+        private void Start()
+        {
+            for (int i = 0; i < preloadedEnemies; i++)
+            {
+                var enemy = m_RagdollFactory.Create();
+                enemy.gameObject.SetActive(false);
+                preloaded.Add(enemy);
+            }
+        }
+        List<RagdollModel> preloaded = new List<RagdollModel>();
         public void SpawnEnemy()
         {
-            if (!enemy1)
+            if (preloaded.Count > 0)
             {
-                enemy1 = m_RagdollFactory.Create();
-                enemy1.transform.position = m_SpawnPoint1.position;
-            }
-            else if (!enemy2)
-            {
-                enemy2 = m_RagdollFactory.Create();
-                enemy2.transform.position = m_SpawnPoint2.position;
-            }
-            else if (!enemy3)
-            {
-                enemy3 = m_RagdollFactory.Create();
-                enemy3.transform.position = m_SpawnPoint3.position;
+                var enemy = preloaded[0];
+                if (!enemy1)
+                {
+                    enemy1 = enemy;
+                    preloaded.Remove(enemy1);
+                    enemy1.gameObject.SetActive(true);
+                    enemy1.transform.position = m_SpawnPoint1.position;
+                }
+                else if (!enemy2)
+                {
+                    enemy2 = enemy;
+                    preloaded.Remove(enemy2);
+                    enemy2.gameObject.SetActive(true);
+                    enemy2.transform.position = m_SpawnPoint2.position;
+                }
+                else if (!enemy3)
+                {
+                    enemy3 = enemy;
+                    preloaded.Remove(enemy3);
+                    enemy3.gameObject.SetActive(true);
+                    enemy3.transform.position = m_SpawnPoint3.position;
+                }
             }
 
         }

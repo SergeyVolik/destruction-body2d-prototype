@@ -6,21 +6,26 @@ namespace Prototype
 {
     public class BodyCellNode : MonoBehaviour, IDamageable
     {
-        [SerializeField]
-        public BodyCellNode m_TopCell;
-        [SerializeField]
-        public BodyCellNode m_BottomCell;
-        [SerializeField]
-        public BodyCellNode m_LeftCell;
-        [SerializeField]
-        public BodyCellNode m_RightCell;
+        [SerializeField] public BodyCellNode m_TopCell;
+        [SerializeField] public BodyCellNode m_BottomCell;
+        [SerializeField] public BodyCellNode m_LeftCell;
+        [SerializeField] public BodyCellNode m_RightCell;
 
 
-        private HealthHandler m_Health;
-        private SpriteRenderer m_SpriteRenderer;
-        private CellsSettings m_CellSettings;
-        private BoxCollider2D m_Collider2D;
-        private Rigidbody2D m_Rigidbody2D;
+        [SerializeField] private HealthHandler m_Health;
+        [SerializeField] private SpriteRenderer m_SpriteRenderer;
+        [SerializeField] private CellsSettings m_CellSettings;
+        [SerializeField] private BoxCollider2D m_Collider2D;
+        [SerializeField] private Rigidbody2D m_Rigidbody2D;
+
+        public HealthHandler Health => m_Health;
+
+        public BodyPart BodyPart;
+
+        void Start()
+        {
+            m_Health.Init(100);
+        }
 
         public void ConnectCells(BodyCellNode right, BodyCellNode left, BodyCellNode bottom, BodyCellNode top)
         {
@@ -30,27 +35,7 @@ namespace Prototype
             m_RightCell = right;
         }
 
-        [Inject]
-        void Construct(
-            HealthHandler health,
-            SpriteRenderer spriteRenderer,
-            CellsSettings settings,
-            BoxCollider2D collider,
-            Rigidbody2D rb
-
-            )
-        {
-            m_Health = health;
-            m_SpriteRenderer = spriteRenderer;
-            m_CellSettings = settings;
-            m_Collider2D = collider;
-            m_Rigidbody2D = rb;
-
-            health.Init(settings.maxHealth);
-        }
-
-
-        private void ApplayDamageToNode(BodyCellNode node, int dmg, Vector3 damagePos)
+        public void ApplayDamageToNode(BodyCellNode node, int dmg, Vector3 damagePos)
         {
             if (node)
             {
@@ -62,7 +47,7 @@ namespace Prototype
                     var forceVector = node.transform.position - damagePos;
                     node.m_Rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
                     node.m_Rigidbody2D.AddForce(forceVector.normalized * m_CellSettings.pushCellForce, ForceMode2D.Impulse);
-                    node.m_Collider2D.enabled = false;
+                    //node.m_Collider2D.enabled = false;
                     node.transform.parent = null;
                     node.KillWithDelay();
                     Color.Lerp(m_CellSettings.minHealthColor, m_CellSettings.maxHealthColor, Random.Range(0, 1f));
@@ -72,7 +57,7 @@ namespace Prototype
                 node.m_SpriteRenderer.color = Color.Lerp(m_CellSettings.minHealthColor, m_CellSettings.maxHealthColor, node.m_Health.Health / (float)node.m_Health.MaxHealth);
             }
         }
-        public void PopulateDamage(int damage, int horizontalDepth, int verticalDepth, Vector3 damagePos, bool horizontal)
+        public void PopulateDamage(int damage, int horizontalDepth, Vector3 damagePos)
         {
 
 
@@ -86,26 +71,21 @@ namespace Prototype
         
             ApplayDamageToNode(this, dmg, damagePos);
 
-            m_TopCell?.PopulateDamage(25, horizontalDepth, verticalDepth, damagePos, horizontal);
-            m_BottomCell?.PopulateDamage(25, horizontalDepth, verticalDepth, damagePos, horizontal);
-            m_LeftCell?.PopulateDamage(25, horizontalDepth, verticalDepth, damagePos, horizontal);
-            m_RightCell?.PopulateDamage(25, horizontalDepth, verticalDepth, damagePos, horizontal);
-
-        }
-
-
-
-
-        void Update()
-        {
+            m_TopCell?.PopulateDamage(25, horizontalDepth, damagePos);
+            m_BottomCell?.PopulateDamage(25, horizontalDepth, damagePos);
+            m_LeftCell?.PopulateDamage(25, horizontalDepth, damagePos);
+            m_RightCell?.PopulateDamage(25, horizontalDepth, damagePos);
 
         }
 
         public void ApplyDamage(int damage, Vector3 damagePos)
         {
-            PopulateDamage(damage, 1, 1, damagePos, true);
-        }
 
+            PopulateDamage(damage, 1, damagePos);
+
+            BodyPart.BodySliced(this);
+
+        }
 
         void KillWithDelay()
         {

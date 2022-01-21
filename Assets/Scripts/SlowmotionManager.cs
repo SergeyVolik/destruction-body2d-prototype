@@ -56,8 +56,7 @@ namespace Prototype
         public void DoSlowmotion()
         {
             if (enabled)
-            {
-                Debug.Log("DoSlowmotion");
+            {                
                 Time.timeScale = m_Settings.slowdownFactor;
                 Time.fixedDeltaTime = m_DefaultFixedDeltaTime * Time.timeScale;
                 m_T = 0;

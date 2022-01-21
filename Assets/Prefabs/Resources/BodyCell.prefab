@@ -11,8 +11,6 @@ GameObject:
   - component: {fileID: 5193767164451238506}
   - component: {fileID: 624812547383295845}
   - component: {fileID: 2108867128888498759}
-  - component: {fileID: 8494890075154894472}
-  - component: {fileID: 3148785380069549499}
   - component: {fileID: 8969068923144000485}
   - component: {fileID: 822699040961055574}
   - component: {fileID: 5565192473506548099}
@@ -102,44 +100,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b27d735ab8a868e4c941c68f1fa1795a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8494890075154894472
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 512721110353532724}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08eca9f7688a0a24685b89133b020c8e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _scriptableObjectInstallers: []
-  _monoInstallers: []
-  _installerPrefabs: []
-  _autoRun: 1
-  _kernel: {fileID: 0}
---- !u!114 &3148785380069549499
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 512721110353532724}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0166d8ff8d905b048b2448179e1f5d11, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _components:
-  - {fileID: 624812547383295845}
-  - {fileID: 8969068923144000485}
-  - {fileID: 822699040961055574}
-  - {fileID: 5565192473506548099}
-  _identifier: 
-  _useSceneContext: 0
-  _context: {fileID: 8494890075154894472}
-  _bindType: 0
+  m_TopCell: {fileID: 0}
+  m_BottomCell: {fileID: 0}
+  m_LeftCell: {fileID: 0}
+  m_RightCell: {fileID: 0}
+  m_Health: {fileID: 8969068923144000485}
+  m_SpriteRenderer: {fileID: 624812547383295845}
+  m_CellSettings:
+    maxHealthColor: {r: 1, g: 1, b: 1, a: 1}
+    minHealthColor: {r: 1, g: 0, b: 0, a: 1}
+    maxHealth: 100
+    cellSize: 0.1
+    pushCellForce: 0.5
+  m_Collider2D: {fileID: 822699040961055574}
+  m_Rigidbody2D: {fileID: 5565192473506548099}
 --- !u!114 &8969068923144000485
 MonoBehaviour:
   m_ObjectHideFlags: 0

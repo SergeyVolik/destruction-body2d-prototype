@@ -18,6 +18,11 @@ namespace Prototype
         private RagdollModel m_RagdollModel;
         public Rigidbody2D Rigidbody2D => m_Rigidbody2D;
 
+
+        [SerializeField] public BodyCellNode[,] BodyCells;
+        [SerializeField] private List<HingeJoint2D> m_SliceJoints;
+        [SerializeField] private bool m_CheckSliceHirozontal;
+        [SerializeField] private bool m_KillSlicedCellsToDown;
         [Inject]
         void Construct(
             CellsSettings settings,
@@ -35,6 +40,7 @@ namespace Prototype
         }
 
 
+
         private void OnTriggerEnter2D(Collider2D collision)
         {
 
@@ -42,7 +48,6 @@ namespace Prototype
             {
                 m_RagdollModel.Activate();
                 var vector = (transform.position - collision.transform.position).normalized;
-                Debug.Log($"{vector} push body part");
                 Rigidbody2D.AddForce(vector* m_RagdollModel.Settings.bodyPushForce, ForceMode2D.Impulse);
 
                 
@@ -50,6 +55,138 @@ namespace Prototype
  
         }
 
+
+        public void BodySliced(BodyCellNode node)
+        {
+            if (IsBodySliced(node))
+            {
+                print($"{name} part Sliced");
+                for (int i = 0; i < m_SliceJoints.Count; i++)
+                {
+                    m_SliceJoints[i].connectedBody = null;
+                    m_SliceJoints[i].enabled = false;
+                }
+
+                KillSlicedCells(node);
+            }
+          
+        }
+
+        public void KillSlicedCells(BodyCellNode node)
+        {
+            if(m_KillSlicedCellsToDown)
+                KillDown(node);
+            else
+                KillUp(node);
+
+        }
+
+        private void KillDown(BodyCellNode node)
+        {
+            if (node == null)
+                return;
+
+            node.ApplayDamageToNode(node,  100, node.transform.position);
+
+            KillLeft(node.m_LeftCell);
+            KillRight(node.m_RightCell);
+
+            KillDown(node.m_BottomCell);
+        }
+
+        private void KillUp(BodyCellNode node)
+        {
+            if (node == null)
+                return;
+
+            node.ApplayDamageToNode(node, 100, node.transform.position);
+
+            KillLeft(node.m_LeftCell);
+            KillRight(node.m_RightCell);
+
+            KillUp(node.m_TopCell);
+        }
+        private void KillLeft(BodyCellNode node)
+        {
+           
+
+            if (node == null)
+                return;
+
+            node.ApplayDamageToNode(node, 100, node.transform.position);
+
+            KillLeft(node.m_LeftCell);
+        }
+        private void KillRight(BodyCellNode node)
+        {
+           
+
+            if (node == null)
+                return;
+
+            node.ApplayDamageToNode(node, 100, node.transform.position);
+
+            KillRight(node.m_RightCell);
+        }
+        bool IsBodySliced(BodyCellNode node)
+        {
+            var result = true;
+
+            if (m_CheckSliceHirozontal)
+            {
+                CheckSliceLeft(ref result, node);
+                CheckSliceRight(ref result, node);
+            }
+            else
+            {
+                CheckSliceUp(ref result, node);
+                CheckSliceDown(ref result, node);
+            }
+
+            return result;
+        }
+
+        void CheckSliceLeft(ref bool sliced, BodyCellNode node)
+        {
+            if (node)
+            {
+                if (node.Health.IsDead == false)
+                    sliced = false;
+
+                CheckSliceLeft(ref sliced, node.m_LeftCell);
+            }
+        }
+        void CheckSliceRight(ref bool sliced, BodyCellNode node)
+        {
+            if (node)
+            {
+                if (node.Health.IsDead == false)
+                    sliced = false;
+
+                CheckSliceRight(ref sliced, node.m_RightCell);
+            }
+        }
+
+        void CheckSliceUp(ref bool sliced, BodyCellNode node)
+        {
+            if (node)
+            {
+                if (node.Health.IsDead == false)
+                    sliced = false;
+
+                CheckSliceUp(ref sliced, node.m_TopCell);
+            }
+        }
+        void CheckSliceDown(ref bool sliced, BodyCellNode node)
+        {
+            if (node)
+            {
+                if (node.Health.IsDead == false)
+                    sliced = false;
+
+                CheckSliceDown(ref sliced, node.m_BottomCell);
+            }
+        }
 
     }
 
