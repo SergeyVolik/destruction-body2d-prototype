@@ -20,12 +20,12 @@ MonoBehaviour:
     pushCellForce: 0.5
   m_ShoottingSettings:
     bulletDamageMult: 100000
-    bulletSpeedMax: 20
-    bulletSpeedMin: 20
+    bulletSpeedMax: 100
+    bulletSpeedMin: 100
     delayBetweenShots: 0.1
   m_SlowmotionSettings:
     slowdownFactor: 0.05
     slowdownLength: 2
     slowdownTime: 1
   m_RagdollSettings:
-    bodyPushForce: 50
+    bodyPushForce: 5

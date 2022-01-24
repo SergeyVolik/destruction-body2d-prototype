@@ -18,7 +18,10 @@ namespace Prototype
         [SerializeField] private BoxCollider2D m_Collider2D;
         [SerializeField] private Rigidbody2D m_Rigidbody2D;
 
+        [SerializeField]  public int IndexX;
+        [SerializeField]  public int IndexY;
         public HealthHandler Health => m_Health;
+        public bool IsDead => Health.IsDead;
         public Rigidbody2D Rigidbody2D => m_Rigidbody2D;
 
         public BodyPart BodyPart;
@@ -28,12 +31,12 @@ namespace Prototype
             m_Health.Init(100);
         }
 
-        public void ConnectCells(BodyCellNode right, BodyCellNode left, BodyCellNode bottom, BodyCellNode top)
+        public void ConnectCells(BodyCellNode topCell, BodyCellNode bottomCell, BodyCellNode leftCell, BodyCellNode rightCell)
         {
-            m_TopCell = top;
-            m_BottomCell = bottom;
-            m_LeftCell = left;
-            m_RightCell = right;
+            m_TopCell = topCell;
+            m_BottomCell = bottomCell;
+            m_LeftCell = leftCell;
+            m_RightCell = rightCell;
         }
 
         IEnumerator ActivateBoxCollider(BodyCellNode node)
@@ -89,7 +92,8 @@ namespace Prototype
 
             PopulateDamage(damage, 1, damagePos);
 
-            BodyPart.BodySliced(this);
+            if(Health.IsDead)
+                BodyPart.BodySliceCheck(this);
 
         }
 

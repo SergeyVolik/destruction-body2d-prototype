@@ -8,6 +8,8 @@ namespace Prototype
 {
 
 
+
+
     [CustomEditor(typeof(BodyPart))]
     public class BodyPartEditor : Editor
     {
@@ -65,22 +67,29 @@ namespace Prototype
             var minPosWithOffset = new Vector3(bounds.min.x + startOffset, bounds.min.y + startOffset, 0);
             float moveOffset = size;
 
-            bodypart.BodyCells = new BodyCellNode[horizonalCellsNumber, verticalCellsNumber];
+            bodypart.BodyCellLines = new BodyCellLine[verticalCellsNumber];
             var prefab = Resources.Load<GameObject>("BodyCell");
-            for (int i = 0; i < horizonalCellsNumber; i++)
+            for (int i = 0; i < verticalCellsNumber; i++)
             {
-                for (int j = 0; j < verticalCellsNumber; j++)
+                var bodyCellLine = new BodyCellLine();
+                bodyCellLine.Cells = new BodyCellNode[horizonalCellsNumber];
+                for (int j = 0; j < horizonalCellsNumber; j++)
                 {
                     var obj = PrefabUtility.InstantiatePrefab(prefab) as GameObject;              
                     var  cell = obj.GetComponent<BodyCellNode>();
-                    cell.transform.position = new Vector3(minPosWithOffset.x + moveOffset * i, minPosWithOffset.y + moveOffset * j, 0);
+                    cell.transform.position = new Vector3(minPosWithOffset.x + moveOffset * j, minPosWithOffset.y + moveOffset * i, 0);
                     cell.transform.localScale = cellSize;
                     cell.transform.rotation = bodyPartTransform.rotation;
                     cell.transform.parent = bodyPartTransform;
                     cell.BodyPart = bodypart;
-                    bodypart.BodyCells[i, j] = cell;
+                    bodyCellLine.Cells[j] = cell;
+                    cell.IndexX = j;
+                    cell.IndexY = i;
+                   
 
                 }
+
+                bodypart.BodyCellLines[i] = bodyCellLine;
             }
 
             bodyPartTransform.rotation = savedRot;
@@ -89,17 +98,19 @@ namespace Prototype
 
         private void ConnectNodes(BodyPart bodypart)
         {
-            var height = bodypart.BodyCells.GetLength(0);
-            var width = bodypart.BodyCells.GetLength(1);
+            var height = bodypart.BodyCellLines.Length;
+          
 
             for (int i = 0; i < height; i++)
             {
+                var width = bodypart.BodyCellLines[i].Cells.Length;
+
                 for (int j = 0; j < width; j++)
                 {
-                    BodyCellNode right = null;
-                    BodyCellNode top = null;
-                    BodyCellNode bottom = null;
-                    BodyCellNode left = null;
+                    BodyCellNode topCell = null;
+                    BodyCellNode rightCell = null;
+                    BodyCellNode leftCell = null;
+                    BodyCellNode bottomCell = null;
 
 
                     var topIndex = i + 1;
@@ -108,16 +119,16 @@ namespace Prototype
                     var leftIndex = j - 1;
 
                     if (rightIndex < width)
-                        top = bodypart.BodyCells[i, rightIndex];
+                        rightCell = bodypart.BodyCellLines[i].Cells[rightIndex];
                     if (leftIndex >= 0)
-                        bottom = bodypart.BodyCells[i, leftIndex];
+                        leftCell = bodypart.BodyCellLines[i].Cells[leftIndex];
 
                     if (topIndex < height)
-                        right = bodypart.BodyCells[topIndex, j];
+                        topCell = bodypart.BodyCellLines[topIndex].Cells[j];
                     if (bottomIndex >= 0)
-                        left = bodypart.BodyCells[bottomIndex, j];
+                        bottomCell = bodypart.BodyCellLines[bottomIndex].Cells[j];
 
-                    bodypart.BodyCells[i, j].ConnectCells(right, left, bottom, top);
+                    bodypart.BodyCellLines[i].Cells[j].ConnectCells(topCell, bottomCell, leftCell, rightCell);
 
                 }
             }
