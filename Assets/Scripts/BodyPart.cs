@@ -46,7 +46,7 @@ namespace Prototype
         [SerializeField] private BodySubPart m_BodySubPart1;
         [SerializeField] private CutSettings m_CutSettings;
 
-        [SerializeField] private SubBodyPosition m_CollectCellsDirection;
+        [SerializeField] private SubBodyPosition m_SubBodyPosition;
 
         [Inject]
         void Construct(
@@ -92,7 +92,26 @@ namespace Prototype
         void CollectCellsFromHorizontalDeadNodes()
         {
 
+            switch (m_SubBodyPosition)
+            {
+                case SubBodyPosition.Up:
+                    CollectSubBodyCellsUp();
 
+                    break;
+                case SubBodyPosition.Down:
+                    CollectSubBodyCellsDown();
+                    break;
+                default:
+                    break;
+            }
+
+
+            m_BoxCollider2D.size = m_CutSettings.colliderSize;
+            m_BoxCollider2D.offset = m_CutSettings.colliderOffset;
+        }
+
+        private void CollectSubBodyCellsUp()
+        {
             foreach (var item in m_HorizontalDeadNodes.Values)
             {
                 for (int i = 0; i < BodyCellLines.Length; i++)
@@ -109,48 +128,135 @@ namespace Prototype
                     }
                 }
 
+            }
+        }
+
+        private void CollectSubBodyCellsDown()
+        {
+            foreach (var item in m_HorizontalDeadNodes.Values)
+            {
+                for (int i = 0; i < BodyCellLines.Length; i++)
+                {
+                    var nodecell = BodyCellLines[i].Cells[item.IndexX];
+
+                    if (!nodecell.IsDead)
+                    {
+
+                        if (item.IndexY > i && m_BodySubPart1)
+                        {
+                            nodecell.transform.parent = m_BodySubPart1.transform;
+                        }
+                    }
+                }
 
             }
+        }
 
-            m_BoxCollider2D.size = m_CutSettings.colliderSize;
-            m_BoxCollider2D.offset = m_CutSettings.colliderOffset;
+        private void CollectSubBodyCellLeft()
+        {
+            foreach (var item in m_VerticalDeadNodes.Values)
+            {
+                for (int i = 0; i < BodyCellLines[item.IndexY].Cells.Length; i++)
+                {
+                    var nodecell = BodyCellLines[item.IndexY].Cells[i];
+
+                    if (!nodecell.IsDead)
+                    {
+
+                        if (item.IndexX > i && m_BodySubPart1)
+                        {
+                            nodecell.transform.parent = m_BodySubPart1.transform;
+                        }
+                    }
+                }
+
+            }
+        }
+
+        private void CollectSubBodyCellRight()
+        {
+            foreach (var item in m_VerticalDeadNodes.Values)
+            {
+                for (int i = 0; i < BodyCellLines[item.IndexY].Cells.Length; i++)
+                {
+                    var nodecell = BodyCellLines[item.IndexY].Cells[i];
+
+                    if (!nodecell.IsDead)
+                    {
+
+                        if (item.IndexX < i && m_BodySubPart1)
+                        {
+                            nodecell.transform.parent = m_BodySubPart1.transform;
+                        }
+                    }
+                }
+
+            }
         }
 
         void CollectCellsFromVerticalDeadNodes()
         {
+            switch (m_SubBodyPosition)
+            {
+                case SubBodyPosition.Left:
+                    CollectSubBodyCellLeft();
+                    break;
+                case SubBodyPosition.Right:
+                    CollectSubBodyCellRight();
+                    break;
+                default:
+                    break;
+            }
+
             m_BoxCollider2D.size = m_CutSettings.colliderSize;
             m_BoxCollider2D.offset = m_CutSettings.colliderOffset;
         }
 
-            private bool IsCuttedHorizontal() => m_HorizontalDeadNodes.Count == BodyCellLines[0].Cells.Length;
+        private bool IsCuttedHorizontal() => m_HorizontalDeadNodes.Count == BodyCellLines[0].Cells.Length;
         private bool IsCuttedVertical() => m_VerticalDeadNodes.Count == BodyCellLines.Length;
+
+        bool m_NeedCheckJoints = true;
+
+        private void LateUpdate()
+        {
+            if (m_NeedCheckJoints)
+            {
+                m_NeedCheckJoints = false;
+
+                CheckJointsConnection();
+
+                if (!m_Cutted)
+                {
+
+                    if (m_CheckSliceHirozontal && IsCuttedHorizontal())
+                    {
+                        CollectCellsFromHorizontalDeadNodes();
+                        Debug.Log("BodySliced");
+                        m_Cutted = true;
+                        m_BodySubPart1?.ActivateAndConnectJoints();
+                        m_BodySubPart1.Rigidbody2D.velocity = Rigidbody2D.velocity;
+
+                    }
+                    else if (!m_CheckSliceHirozontal && IsCuttedVertical())
+                    {
+                        CollectCellsFromVerticalDeadNodes();
+                        Debug.Log("BodySliced");
+                        m_Cutted = true;
+                        m_BodySubPart1?.ActivateAndConnectJoints();
+                        m_BodySubPart1.Rigidbody2D.velocity = Rigidbody2D.velocity;
+                    }
+
+                }
+            }
+        }
         public void BodySliceCheck(BodyCellNode node)
         {
 
-
+          
             m_HorizontalDeadNodes[node.IndexX] = node;
             m_VerticalDeadNodes[node.IndexY] = node;
+            m_NeedCheckJoints = true;
 
-            if(!m_Cutted)
-            {
-
-                if (m_CheckSliceHirozontal && IsCuttedHorizontal())
-                {
-                    CollectCellsFromHorizontalDeadNodes();
-
-                    Debug.Log("BodySliced");
-
-                    m_Cutted = true;
-
-                    m_BodySubPart1?.ReconnectAndActivate();
-
-                }
-                else if (!m_CheckSliceHirozontal && IsCuttedVertical())
-                {
-                    
-                }
-
-            }
         }
 
         void CheckJointsConnection()
@@ -166,7 +272,7 @@ namespace Prototype
 
         public void KillSlicedCells(BodyCellNode node)
         {
-            switch (m_CollectCellsDirection)
+            switch (m_SubBodyPosition)
             {
                 case SubBodyPosition.Left:
                     KillLeftEntry(node);

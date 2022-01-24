@@ -20,8 +20,8 @@ MonoBehaviour:
     pushCellForce: 0.5
   m_ShoottingSettings:
     bulletDamageMult: 100000
-    bulletSpeedMax: 100
-    bulletSpeedMin: 100
+    bulletSpeedMax: 200
+    bulletSpeedMin: 200
     delayBetweenShots: 0.1
   m_SlowmotionSettings:
     slowdownFactor: 0.05

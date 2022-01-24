@@ -8,13 +8,19 @@ using Zenject;
 
 namespace Prototype
 {
-    public class InputReader : ITickable
+    public class InputReader : ITickable, IInitializable
     {
         private Vector3 m_InputPos;
 
         public Vector3 InputPos => m_InputPos;
 
         public event Action OnShoot;
+
+        Camera m_Camera;
+        public void Initialize()
+        {
+            m_Camera = Camera.main;
+        }
 
         public void Tick()
         {
@@ -23,7 +29,7 @@ namespace Prototype
 
             if (Input.GetMouseButtonDown(0))
             {
-                m_InputPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                m_InputPos = m_Camera.ScreenToWorldPoint(Input.mousePosition);
                 OnShoot?.Invoke();
                 
             }

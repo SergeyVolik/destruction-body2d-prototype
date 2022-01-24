@@ -46,17 +46,21 @@ namespace Prototype
                 Time.timeScale += (1f / m_Settings.slowdownLength) * Time.unscaledDeltaTime;
                 Time.timeScale = Mathf.Clamp(Time.timeScale, 0f, 1f);
                 Time.fixedDeltaTime = m_DefaultFixedDeltaTime * Time.timeScale;
+                m_Processed = false;
             }
 
             m_T += Time.unscaledDeltaTime;
 
         }
 
-
+        bool m_Processed = false;
         public void DoSlowmotion()
         {
-            if (enabled)
-            {                
+
+          
+            if (enabled && !m_Processed)
+            {
+                m_Processed = true;
                 Time.timeScale = m_Settings.slowdownFactor;
                 Time.fixedDeltaTime = m_DefaultFixedDeltaTime * Time.timeScale;
                 m_T = 0;

@@ -22,7 +22,8 @@ namespace Prototype
 
         private void InstallFactories()
         {
-            Container.BindFactory<Bullet, Bullet.Factory>()
+            Container.BindMemoryPool<Bullet, Bullet.Pool>()
+                .WithInitialSize(10)
               .FromComponentInNewPrefab(m_BulletPrefab)
               .WithGameObjectName("Bullet")
               .UnderTransformGroup("Bullets");

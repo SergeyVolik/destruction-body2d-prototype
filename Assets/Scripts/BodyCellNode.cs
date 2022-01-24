@@ -25,10 +25,11 @@ namespace Prototype
         public Rigidbody2D Rigidbody2D => m_Rigidbody2D;
 
         public BodyPart BodyPart;
-
+        private Transform m_Transform;
         void Start()
         {
             m_Health.Init(100);
+            m_Transform = transform;
         }
 
         public void ConnectCells(BodyCellNode topCell, BodyCellNode bottomCell, BodyCellNode leftCell, BodyCellNode rightCell)
@@ -53,11 +54,11 @@ namespace Prototype
 
                 if (node.m_Health.IsDead)
                 {
-                    var forceVector = node.transform.position - damagePos;
+                    var forceVector = node.m_Transform.position - damagePos;
                     node.m_Rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
                     node.m_Rigidbody2D.AddForce(forceVector.normalized * m_CellSettings.pushCellForce, ForceMode2D.Impulse);
                     StartCoroutine(ActivateBoxCollider(node));
-                    node.transform.parent = null;
+                    node.m_Transform.parent = null;
                     node.KillWithDelay();
                     Color.Lerp(m_CellSettings.minHealthColor, m_CellSettings.maxHealthColor, Random.Range(0, 1f));
                     return;

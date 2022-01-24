@@ -11,14 +11,14 @@ namespace Prototype
     public class BodySubPart : MonoBehaviour
     {
         [SerializeField] private Rigidbody2D m_RB;
-
         [SerializeField] private HingeJoint2D[] m_ConnectTo;
 
+        public Rigidbody2D Rigidbody2D => m_RB;
         private void Start()
         {
             gameObject.SetActive(false);
         }
-        public void ReconnectAndActivate()
+        public void ActivateAndConnectJoints()
         {
             gameObject.SetActive(true);
             transform.parent = null;
