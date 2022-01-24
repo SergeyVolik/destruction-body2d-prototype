@@ -42,6 +42,7 @@ namespace Prototype
             print("Shot");
             var bullet = m_BulletFactory.Create();
             bullet.speed = speed;
+            bullet.transform.rotation = transform.rotation;
             bullet.transform.position = m_BulletSpawnPoint.position;
             bullet.Push(transform.right * speed);
 

@@ -6,6 +6,7 @@ using Zenject;
 namespace Prototype
 {
 
+
     [RequireComponent(typeof(Rigidbody2D))]
     public class Bullet : MonoBehaviour
     {
@@ -26,21 +27,6 @@ namespace Prototype
             m_TimeManager = timeManager;
         }
 
-        bool dead = false;
-        //private void OnCollisionEnter2D(Collision2D collision)
-        //{
-            
-        //    if (!dead && collision.collider.TryGetComponent<IDamageable>(out var damagable))
-        //    {
-        //        dead = true;
-        //        Debug.Log(m_RB.velocity.magnitude);
-        //        damagable.ApplyDamage((int)(speed * m_Settings.bulletDamageMult));
-        //        Destroy(gameObject);
-
-        //    }
-
-           
-        //}
 
         private void OnTriggerEnter2D(Collider2D collision)
         {

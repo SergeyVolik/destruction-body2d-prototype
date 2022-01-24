@@ -22,7 +22,7 @@ namespace Prototype
         {
             for (int i = 0; i < m_BodyParts.Length; i++)
             {
-                m_BodyParts[i].Rigidbody2D.mass = 2;
+                m_BodyParts[i].Rigidbody2D.mass = 10;
                 m_BodyParts[i].Rigidbody2D.gravityScale = 4;
             }
         }

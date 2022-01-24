@@ -28,8 +28,9 @@ namespace Prototype
         public HingeJoint2D Joint => m_Joint;
 
         [SerializeField] public BodyCellNode[,] BodyCells;
-        [SerializeField] private List<HingeJoint2D> m_SliceJoints;
         [SerializeField] private bool m_CheckSliceHirozontal;
+
+        [SerializeField] private JointPoints[] m_JointPoints;
 
         [SerializeField] private KillCellsDirection m_KillCellsDirection;
         [Inject]
@@ -70,18 +71,27 @@ namespace Prototype
       
         public void BodySliced(BodyCellNode node)
         {
-            if (IsBodySliced(node))
-            {
-                print($"{name} part Sliced");
-                for (int i = 0; i < m_SliceJoints.Count; i++)
-                {
-                    m_SliceJoints[i].connectedBody = null;
-                    m_SliceJoints[i].enabled = false;
-                }
+            //if (IsBodySliced(node))
+            //{
 
-                KillSlicedCells(node);
+            //    KillSlicedCells(node);
+            //}
+
+            CheckJointsConnection();
+
+
+
+        }
+
+        void CheckJointsConnection()
+        {
+            for (int i = 0; i < m_JointPoints.Length; i++)
+            {
+                if (m_JointPoints[i].CheckJointConnection())
+                {
+                    m_JointPoints[i].DisconnectJoint();
+                }
             }
-          
         }
 
         public void KillSlicedCells(BodyCellNode node)
@@ -108,11 +118,27 @@ namespace Prototype
         }
         private void KillLeftEntry(BodyCellNode node)
         {
+            if (node == null)
+                return;
 
+            node.ApplayDamageToNode(node, 100, node.transform.position);
+            node.Rigidbody2D.velocity = Rigidbody2D.velocity;
+            KillDown(node.m_BottomCell);
+            KillUp(node.m_TopCell);
+
+            KillLeftEntry(node.m_LeftCell);
         }
         private void KillRightEntry(BodyCellNode node)
         {
+            if (node == null)
+                return;
 
+            node.ApplayDamageToNode(node, 100, node.transform.position);
+            node.Rigidbody2D.velocity = Rigidbody2D.velocity;
+            KillDown(node.m_BottomCell);
+            KillUp(node.m_TopCell);
+
+            KillRightEntry(node.m_RightCell);
         }
         private void KillDownEntry(BodyCellNode node)
         {
@@ -160,6 +186,30 @@ namespace Prototype
             node.ApplayDamageToNode(node, 100, node.transform.position);
             node.Rigidbody2D.velocity = Rigidbody2D.velocity;
             KillRight(node.m_RightCell);
+        }
+
+        private void KillUp(BodyCellNode node)
+        {
+
+
+            if (node == null)
+                return;
+
+            node.ApplayDamageToNode(node, 100, node.transform.position);
+            node.Rigidbody2D.velocity = Rigidbody2D.velocity;
+            KillRight(node.m_TopCell);
+        }
+
+        private void KillDown(BodyCellNode node)
+        {
+
+
+            if (node == null)
+                return;
+
+            node.ApplayDamageToNode(node, 100, node.transform.position);
+            node.Rigidbody2D.velocity = Rigidbody2D.velocity;
+            KillRight(node.m_BottomCell);
         }
         bool IsBodySliced(BodyCellNode node)
         {

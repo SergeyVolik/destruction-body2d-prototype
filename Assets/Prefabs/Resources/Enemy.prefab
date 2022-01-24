@@ -1052,6 +1052,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SliceJoints: []
   m_CheckSliceHirozontal: 1
+  m_JointPoints:
+  - m_Points:
+    - {fileID: 6452504675413785800}
+    - {fileID: 5693434707199200426}
+    - {fileID: 3257572130084875261}
+    - {fileID: 3880557973524432749}
+    m_ConnectedJoint: {fileID: 1953952579}
   m_KillCellsDirection: 2
 --- !u!114 &1460807768104454428
 MonoBehaviour:
@@ -1315,11 +1322,11 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1460807768236774765}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 2
+  m_Mass: 4
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 4
@@ -1344,6 +1351,32 @@ MonoBehaviour:
   - {fileID: 2070981109}
   - {fileID: 1867149622}
   m_CheckSliceHirozontal: 1
+  m_JointPoints:
+  - m_Points:
+    - {fileID: 5287066879335416190}
+    - {fileID: 1459284858300161250}
+    - {fileID: 4126149000819376432}
+    m_ConnectedJoint: {fileID: 1059513200}
+  - m_Points:
+    - {fileID: 8550357992467441270}
+    - {fileID: 3758409894760220440}
+    - {fileID: 499437269325652033}
+    m_ConnectedJoint: {fileID: 2008946411}
+  - m_Points:
+    - {fileID: 3885342960576004368}
+    - {fileID: 7306856878904223212}
+    - {fileID: 7977568914778884856}
+    m_ConnectedJoint: {fileID: 2070981109}
+  - m_Points:
+    - {fileID: 6823841444302405390}
+    - {fileID: 5178565136345676146}
+    - {fileID: 6622198300329871454}
+    m_ConnectedJoint: {fileID: 1867149622}
+  - m_Points:
+    - {fileID: 6555296272523166545}
+    - {fileID: 8542664804065183583}
+    - {fileID: 8466035302334713149}
+    m_ConnectedJoint: {fileID: 1953952579}
   m_KillCellsDirection: 3
 --- !u!114 &1460807768236774676
 MonoBehaviour:
@@ -1550,7 +1583,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SliceJoints: []
   m_CheckSliceHirozontal: 0
-  m_KillCellsDirection: 3
+  m_JointPoints:
+  - m_Points:
+    - {fileID: 6515444651975517407}
+    - {fileID: 6598145510159867970}
+    - {fileID: 6149297440769889960}
+    - {fileID: 2909070520671054576}
+    m_ConnectedJoint: {fileID: 159377896}
+  m_KillCellsDirection: 1
 --- !u!114 &4340023416486510640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1819,10 +1859,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b54feb87f33b9e641a1805600479f9dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SliceJoints:
-  - {fileID: 159377896}
+  m_SliceJoints: []
   m_CheckSliceHirozontal: 0
-  m_KillCellsDirection: 3
+  m_JointPoints:
+  - m_Points:
+    - {fileID: 1211497678173635787}
+    - {fileID: 5445909234507037106}
+    - {fileID: 1664334810103570613}
+    - {fileID: 2018305898922996206}
+    m_ConnectedJoint: {fileID: 2008946411}
+  - m_Points:
+    - {fileID: 5665310089181646610}
+    - {fileID: 7775139969049221889}
+    - {fileID: 1673127058337707499}
+    - {fileID: 7740984221566937069}
+    m_ConnectedJoint: {fileID: 159377896}
+  m_KillCellsDirection: 1
 --- !u!114 &5502417151672642842
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2060,6 +2112,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SliceJoints: []
   m_CheckSliceHirozontal: 1
+  m_JointPoints:
+  - m_Points:
+    - {fileID: 1770252221203136609}
+    - {fileID: 1948515490711927604}
+    - {fileID: 8381460921025016908}
+    m_ConnectedJoint: {fileID: 1747062401}
   m_KillCellsDirection: 3
 --- !u!114 &3385796790036102496
 MonoBehaviour:
@@ -2288,10 +2346,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b54feb87f33b9e641a1805600479f9dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SliceJoints:
-  - {fileID: 64565572}
+  m_SliceJoints: []
   m_CheckSliceHirozontal: 0
-  m_KillCellsDirection: 3
+  m_JointPoints:
+  - m_Points:
+    - {fileID: 9183925663311470002}
+    - {fileID: 2654704642550373969}
+    - {fileID: 2145593488348915487}
+    - {fileID: 2943611103539354527}
+    m_ConnectedJoint: {fileID: 64565572}
+  - m_Points:
+    - {fileID: 6649299137842400054}
+    - {fileID: 2123041706218606930}
+    - {fileID: 5543031936802759181}
+    - {fileID: 6098521492459015435}
+    m_ConnectedJoint: {fileID: 1059513200}
+  m_KillCellsDirection: 0
 --- !u!114 &8943456247947030118
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2529,6 +2599,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SliceJoints: []
   m_CheckSliceHirozontal: 1
+  m_JointPoints:
+  - m_Points:
+    - {fileID: 2323876705518716726}
+    - {fileID: 965415385406219015}
+    - {fileID: 7556966371037554186}
+    m_ConnectedJoint: {fileID: 1861943974}
   m_KillCellsDirection: 3
 --- !u!114 &6100063733191851842
 MonoBehaviour:
@@ -2768,6 +2844,17 @@ MonoBehaviour:
   m_SliceJoints:
   - {fileID: 1861943974}
   m_CheckSliceHirozontal: 1
+  m_JointPoints:
+  - m_Points:
+    - {fileID: 6649660697527412767}
+    - {fileID: 5358794554864285582}
+    - {fileID: 5379332654353811389}
+    m_ConnectedJoint: {fileID: 2070981109}
+  - m_Points:
+    - {fileID: 182524667679482415}
+    - {fileID: 6392157680611519274}
+    - {fileID: 144130770905506409}
+    m_ConnectedJoint: {fileID: 1861943974}
   m_KillCellsDirection: 3
 --- !u!114 &1840647716173837098
 MonoBehaviour:
@@ -2999,7 +3086,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SliceJoints: []
   m_CheckSliceHirozontal: 0
-  m_KillCellsDirection: 3
+  m_JointPoints:
+  - m_Points:
+    - {fileID: 7194520212392162005}
+    - {fileID: 7480922129201500647}
+    - {fileID: 775700350635107772}
+    - {fileID: 6782553348653944879}
+    m_ConnectedJoint: {fileID: 64565572}
+  m_KillCellsDirection: 0
 --- !u!114 &6758397691493266362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3238,6 +3332,17 @@ MonoBehaviour:
   m_SliceJoints:
   - {fileID: 1747062401}
   m_CheckSliceHirozontal: 1
+  m_JointPoints:
+  - m_Points:
+    - {fileID: 2956262118831382529}
+    - {fileID: 1355335272941347039}
+    - {fileID: 258995861521317498}
+    m_ConnectedJoint: {fileID: 1867149622}
+  - m_Points:
+    - {fileID: 2964770199630865510}
+    - {fileID: 5905700024493542891}
+    - {fileID: 748771110490470448}
+    m_ConnectedJoint: {fileID: 1747062401}
   m_KillCellsDirection: 3
 --- !u!114 &8255638276538152440
 MonoBehaviour:
