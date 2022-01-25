@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6990041335083345320}
   - component: {fileID: 6990041335083345327}
   - component: {fileID: 6990041335083345323}
+  - component: {fileID: -3777315317026814696}
   m_Layer: 0
   m_Name: PistolBullet
   m_TagString: Untagged
@@ -147,3 +148,16 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.34, y: 0.23}
   m_EdgeRadius: 0
+--- !u!114 &-3777315317026814696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6990041335083345326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9afec716639f728439e1fca996c3107f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 0

@@ -19,10 +19,6 @@ namespace Prototype
             m_Settings = settings;
         }
 
-        private void Start()
-        {
-
-        }
 
         bool Activated;
         public void Activate()

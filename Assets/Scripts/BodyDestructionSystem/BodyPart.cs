@@ -31,14 +31,7 @@ namespace Prototype
     [RequireComponent(typeof(SpriteRenderer))]
     public class BodyPart : MonoBehaviour
     {
-        private CellsSettings m_CellsSettings;
-        private BoxCollider2D m_BoxCollider2D;
-        private Rigidbody2D m_Rigidbody2D;
-        private SpriteRenderer m_Renderer;
-        private HingeJoint2D m_Joint;
-        private RagdollModel m_RagdollModel;
-        public Rigidbody2D Rigidbody2D => m_Rigidbody2D;
-        public HingeJoint2D Joint => m_Joint;
+
 
         [SerializeField] public BodyCellLine[] BodyCellLines;
         [SerializeField] private bool m_CheckSliceHirozontal;
@@ -47,6 +40,20 @@ namespace Prototype
         [SerializeField] private CutSettings m_CutSettings;
 
         [SerializeField] private SubBodyPosition m_SubBodyPosition;
+
+        private CellsSettings m_CellsSettings;
+        private BoxCollider2D m_BoxCollider2D;
+        private Rigidbody2D m_Rigidbody2D;
+        private SpriteRenderer m_Renderer;
+        private HingeJoint2D m_Joint;
+        private RagdollModel m_RagdollModel;
+        private Transform m_Transform;
+        private bool m_Cutted = false;
+        private Dictionary<int, BodyCellNode> m_HorizontalDeadNodes = new Dictionary<int, BodyCellNode>();
+        private Dictionary<int, BodyCellNode> m_VerticalDeadNodes = new Dictionary<int, BodyCellNode>();
+
+        public Rigidbody2D Rigidbody2D => m_Rigidbody2D;
+        public HingeJoint2D Joint => m_Joint;
 
         [Inject]
         void Construct(
@@ -68,16 +75,17 @@ namespace Prototype
         private void Awake()
         {
             m_Joint = GetComponent<HingeJoint2D>();
+            m_Transform = transform;
             DeactivateAllBodyCells();
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
 
-            if (collision.TryGetComponent<Bullet>(out _))
+            if (collision.TryGetComponent<Projectile2D>(out _))
             {
                 m_RagdollModel.Activate();
-                var vector = (transform.position - collision.transform.position).normalized;
+                var vector = (m_Transform.position - collision.transform.position).normalized;
                 Rigidbody2D.AddForce(vector * m_RagdollModel.Settings.bodyPushForce, ForceMode2D.Impulse);
                 ActivateAllBodyCells();
 
@@ -121,11 +129,7 @@ namespace Prototype
                 }
             }
         }
-        bool m_Cutted = false;
 
-
-        Dictionary<int, BodyCellNode> m_HorizontalDeadNodes = new Dictionary<int, BodyCellNode>();
-        Dictionary<int, BodyCellNode> m_VerticalDeadNodes = new Dictionary<int, BodyCellNode>();
 
         void CollectCellsFromHorizontalDeadNodes()
         {

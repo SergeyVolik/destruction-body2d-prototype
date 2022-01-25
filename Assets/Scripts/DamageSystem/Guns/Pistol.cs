@@ -9,18 +9,18 @@ namespace Prototype
     {
         private ShootingSettings m_Settings;
         private InputReader m_Input;
-        private Bullet.Pool m_BulletFactory;
+        private PistolBullet.Pool m_BulletPool;
 
         [SerializeField] private Transform m_BulletSpawnPoint;
 
         private Transform m_Trasform;
 
         [Inject]
-        void Construct(ShootingSettings settings, InputReader input, Bullet.Pool factory)
+        void Construct(ShootingSettings settings, InputReader input, PistolBullet.Pool pool)
         {
             m_Settings = settings;
             m_Input = input;
-            m_BulletFactory = factory;
+            m_BulletPool = pool;
 
         }
 
@@ -44,7 +44,7 @@ namespace Prototype
             var vector = m_Input.InputPos - m_Trasform.position;
             var speed = Random.Range(m_Settings.bulletSpeedMin, m_Settings.bulletSpeedMax);
             m_Trasform.rotation = MathfExtention.LookAt2D(vector);
-            var bullet = m_BulletFactory.Spawn();
+            var bullet = m_BulletPool.Spawn();
             bullet.speed = speed;
             var trans = bullet.transform;
             trans.rotation = m_Trasform.rotation;

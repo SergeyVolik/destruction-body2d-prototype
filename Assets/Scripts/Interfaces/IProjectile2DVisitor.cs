@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Prototype
 {
-    public interface IProjectileVisitor
+    public interface IProjectile2DVisitor
     {
         void Visit(CannonBall ball);
         void Visit(GrenadeProjectile grenadeProjectile);

@@ -4,13 +4,12 @@ using Zenject;
 
 namespace Prototype
 {
-    public class BodyCellNode : MonoBehaviour, IDamageable
+    public class BodyCellNode : MonoBehaviour, IDamageable, IProjectile2DVisitor
     {
         [SerializeField] public BodyCellNode m_TopCell;
         [SerializeField] public BodyCellNode m_BottomCell;
         [SerializeField] public BodyCellNode m_LeftCell;
         [SerializeField] public BodyCellNode m_RightCell;
-
 
         [SerializeField] private HealthHandler m_Health;
         [SerializeField] private SpriteRenderer m_SpriteRenderer;
@@ -107,6 +106,26 @@ namespace Prototype
         {
             yield return new WaitForSeconds(delay);
             Destroy(gameObject);
+        }
+
+        public void Visit(CannonBall ball)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Visit(GrenadeProjectile grenadeProjectile)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Visit(LaserProjectile laserProjectile)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Visit(PistolBullet pistolBullet)
+        {
+            throw new System.NotImplementedException();
         }
     }
 
