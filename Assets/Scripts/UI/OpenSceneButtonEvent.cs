@@ -5,6 +5,7 @@ using UnityEngine.UI;
 namespace Prototype
 {
 
+    [DisallowMultipleComponent]
     [RequireComponent(typeof(Button))]
     public class OpenSceneButtonEvent : MonoBehaviour
     {
