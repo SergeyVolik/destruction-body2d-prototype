@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Prototype
 {
-    class CannonBall
+    public class CannonBall
     {
     }
 }

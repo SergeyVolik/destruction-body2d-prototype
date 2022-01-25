@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Prototype
 {
-    class PistolBullet
+    public class PistolBullet
     {
+
     }
 }
