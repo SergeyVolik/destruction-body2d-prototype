@@ -7,11 +7,11 @@ namespace Prototype
 {
     public class GrenadeLauncher : Gun
     {
-        private ShootingSettings m_Settings;
+        private GrenadeLauncherSettings m_Settings;
         private GrenadeProjectile.Pool m_ProjectilePool;
 
         [Inject]
-        void Construct(ShootingSettings settings, GrenadeProjectile.Pool pool)
+        void Construct(GrenadeLauncherSettings settings, GrenadeProjectile.Pool pool)
         {
             m_Settings = settings;
             m_ProjectilePool = pool;
@@ -20,7 +20,7 @@ namespace Prototype
 
         public override void Shot()
         {
-            var speed = Random.Range(m_Settings.bulletSpeedMin, m_Settings.bulletSpeedMax);
+            var speed = m_Settings.projectileSpeed;
             var bullet = m_ProjectilePool.Spawn();
             //bullet.speed = speed;
             var trans = bullet.transform;

@@ -4165,8 +4165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89715ad69b973a14899afa2c6730b30b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _scriptableObjectInstallers:
-  - {fileID: 11400000, guid: df13d63bd83df5c42bbf40a6f820672f, type: 2}
+  _scriptableObjectInstallers: []
   _monoInstallers:
   - {fileID: 2022305824}
   _installerPrefabs: []
@@ -4213,7 +4212,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bee04a54e7888ea4e82cd8ea4a3cb7f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BulletPrefab: {fileID: 871191927428410993, guid: 48049a7045a76c743bb1cc1979622b52, type: 3}
   m_RagdollModelPrefab: {fileID: 1731515874, guid: 5029d2538ab8cb9419307819ca9a7d38, type: 3}
   m_TimeManager: {fileID: 1398554967}
   m_EnemySpawner: {fileID: 1777991619}

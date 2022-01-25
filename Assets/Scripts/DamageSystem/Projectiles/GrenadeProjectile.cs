@@ -11,14 +11,17 @@ namespace Prototype
     public class GrenadeProjectile : Projectile2D
     {
         private GrenadeProjectile.Pool m_Pool;
+        private GrenadeLauncherSettings m_Settings;
         [Inject]
-        void Construct(GrenadeProjectile.Pool pool)
+        void Construct(GrenadeProjectile.Pool pool, GrenadeLauncherSettings settings)
         {
             m_Pool = pool;
+            m_Settings = settings;
         }
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             m_DespawnTime = 8f;
         }
         protected override void Despawn()
@@ -30,6 +33,47 @@ namespace Prototype
             visitor.Visit(this);
         }
 
+        private bool Exploded = false;
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            Exploded = false;
+        }
+        public void Explode()
+        {
+            if (!Exploded)
+            {
+                Exploded = true;
+
+                Despawn();
+                StopAllCoroutines();
+                var position = m_Transform.position;
+                var colliders = Physics2D.OverlapCircleAll(position, m_Settings.explosionRange);
+
+                for (int i = 0; i < colliders.Length; i++)
+                {
+
+                    if (colliders[i].TryGetComponent<IDamageable>(out var damageable))
+                    {
+                       
+                        damageable.ApplyDamage(100, position);
+                    }
+                }
+
+                colliders = Physics2D.OverlapCircleAll(position, m_Settings.explosionRange);
+
+                for (int i = 0; i < colliders.Length; i++)
+                {
+
+                    if (colliders[i].TryGetComponent<IDamageable>(out var damageable))
+                    {
+
+                        damageable.ApplyDamage(100, position);
+                    }
+                }
+
+            }
+        }
         public class Pool : MemoryPool<GrenadeProjectile>
         {
             protected override void OnCreated(GrenadeProjectile bullet)

@@ -27,7 +27,7 @@ namespace Prototype
         }
    
 
-        protected virtual void Start()
+        protected virtual void Awake()
         {
             m_RB = GetComponent<Rigidbody2D>();
             m_Transform = transform;

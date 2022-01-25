@@ -7,11 +7,11 @@ namespace Prototype
 {
     public class Pistol : Gun
     {
-        private ShootingSettings m_Settings;
+        private PistolSettings m_Settings;
         private PistolBullet.Pool m_BulletPool;
 
         [Inject]
-        void Construct(ShootingSettings settings, PistolBullet.Pool pool)
+        void Construct(PistolSettings settings, PistolBullet.Pool pool)
         {
             m_Settings = settings;
             m_BulletPool = pool;
@@ -20,7 +20,7 @@ namespace Prototype
 
         public override void Shot()
         {
-            var speed = Random.Range(m_Settings.bulletSpeedMin, m_Settings.bulletSpeedMax);
+            var speed = m_Settings.projectileSpeed;
             var bullet = m_BulletPool.Spawn();
             bullet.speed = speed;
             var trans = bullet.transform;

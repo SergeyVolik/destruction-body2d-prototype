@@ -17,8 +17,9 @@ namespace Prototype
         {
             m_Pool = pool;
         }
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             m_DespawnTime = 8f;
         }
         protected override void Despawn()

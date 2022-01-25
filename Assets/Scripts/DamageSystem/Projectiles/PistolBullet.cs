@@ -19,8 +19,9 @@ namespace Prototype
             m_Pool = pool;
         }
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             m_DespawnTime = 8f;
         }
         protected override void Despawn()
@@ -32,6 +33,26 @@ namespace Prototype
             visitor.Visit(this);
         }
 
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            Stoped = false;
+            currentSlow = 0;
+        }
+        bool Stoped = false;
+
+        private int CellsToStop = 5;
+        private int currentSlow = 0;
+        public void SlowBullet()
+        {
+            currentSlow++;
+            if (currentSlow >= CellsToStop && !Stoped)
+            {
+                Stoped = true;
+                StopAllCoroutines();
+                Despawn();
+            }
+        }
         public class Pool : MemoryPool<PistolBullet>
         {
             protected override void OnCreated(PistolBullet bullet)

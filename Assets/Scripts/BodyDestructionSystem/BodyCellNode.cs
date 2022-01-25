@@ -25,10 +25,12 @@ namespace Prototype
 
         public BodyPart BodyPart;
         private Transform m_Transform;
-        void Start()
+        void Awake()
         {
             m_Health.Init(100);
             m_Transform = transform;
+
+            gameObject.SetActive(false);
         }
 
         public void ConnectCells(BodyCellNode topCell, BodyCellNode bottomCell, BodyCellNode leftCell, BodyCellNode rightCell)
@@ -89,7 +91,7 @@ namespace Prototype
 
         public void ApplyDamage(int damage, Vector3 damagePos)
         {
-
+            BodyPart.ActivateAllBodyCells();
             PopulateDamage(damage, 1, damagePos);
 
             if(Health.IsDead)
@@ -110,22 +112,25 @@ namespace Prototype
 
         public void Visit(CannonBall ball)
         {
-            throw new System.NotImplementedException();
+            ApplyDamage(100, ball.transform.position);
         }
 
         public void Visit(GrenadeProjectile grenadeProjectile)
         {
-            throw new System.NotImplementedException();
+            
+            grenadeProjectile.Explode();
         }
 
         public void Visit(LaserProjectile laserProjectile)
         {
-            throw new System.NotImplementedException();
+            ApplyDamage(100, laserProjectile.transform.position);
         }
 
         public void Visit(PistolBullet pistolBullet)
         {
-            throw new System.NotImplementedException();
+
+            pistolBullet.SlowBullet();
+            ApplyDamage(100, pistolBullet.transform.position);
         }
     }
 

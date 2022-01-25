@@ -29,7 +29,7 @@ namespace Prototype
     [RequireComponent(typeof(BoxCollider2D))]
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(SpriteRenderer))]
-    public class BodyPart : MonoBehaviour
+    public class BodyPart : MonoBehaviour, IDamageable
     {
 
 
@@ -71,22 +71,26 @@ namespace Prototype
 
         }
 
-        bool m_CellsActivated = true;
+        bool m_CellsActivated = false;
         private void Awake()
         {
             m_Joint = GetComponent<HingeJoint2D>();
             m_Transform = transform;
-            DeactivateAllBodyCells();
+            //DeactivateAllBodyCells();
         }
 
+
+        Transform m_LastTriggeredTrans;
+        Vector2 m_PushBodyForce;
         private void OnTriggerEnter2D(Collider2D collision)
         {
 
             if (collision.TryGetComponent<Projectile2D>(out _))
             {
-                m_RagdollModel.Activate();
-                var vector = (m_Transform.position - collision.transform.position).normalized;
-                Rigidbody2D.AddForce(vector * m_RagdollModel.Settings.bodyPushForce, ForceMode2D.Impulse);
+              
+                m_PushBodyForce = (m_Transform.position - collision.transform.position).normalized;
+
+              
                 ActivateAllBodyCells();
 
             }
@@ -94,7 +98,7 @@ namespace Prototype
         }
 
        
-        void ActivateAllBodyCells()
+        public void ActivateAllBodyCells()
         {
             if (!m_CellsActivated)
             {
@@ -272,20 +276,25 @@ namespace Prototype
 
                     if (m_CheckSliceHirozontal && IsCuttedHorizontal())
                     {
+                        
                         CollectCellsFromHorizontalDeadNodes();
-                        Debug.Log("BodySliced");
+                      
                         m_Cutted = true;
                         m_BodySubPart1?.ActivateAndConnectJoints();
                         m_BodySubPart1.Rigidbody2D.velocity = Rigidbody2D.velocity;
+                        m_RagdollModel.Activate();
+                        Rigidbody2D.AddForce(m_PushBodyForce * m_RagdollModel.Settings.bodyPushForce, ForceMode2D.Impulse);
 
                     }
                     else if (!m_CheckSliceHirozontal && IsCuttedVertical())
                     {
                         CollectCellsFromVerticalDeadNodes();
-                        Debug.Log("BodySliced");
+                       
                         m_Cutted = true;
                         m_BodySubPart1?.ActivateAndConnectJoints();
                         m_BodySubPart1.Rigidbody2D.velocity = Rigidbody2D.velocity;
+                        m_RagdollModel.Activate();
+                        Rigidbody2D.AddForce(m_PushBodyForce * m_RagdollModel.Settings.bodyPushForce, ForceMode2D.Impulse);
                     }
 
                 }
@@ -489,6 +498,10 @@ namespace Prototype
             }
         }
 
+        public void ApplyDamage(int damage, Vector3 pos)
+        {
+            ActivateAllBodyCells();
+        }
     }
 
 
