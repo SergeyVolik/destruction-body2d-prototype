@@ -8,19 +8,24 @@ using Zenject;
 
 namespace Prototype
 {
+
+
     public class EnemySpawner : MonoBehaviour
     {
-        [SerializeField] private Transform m_SpawnPoint1;
-        [SerializeField] private Transform m_SpawnPoint2;
-        [SerializeField] private Transform m_SpawnPoint3;
+        private class PositionAndEnemy 
+        {
+            public Transform SpawnPoint;
+            public RagdollModel Enemy;
+        }
 
-        [SerializeField] private int preloadedEnemies = 10;
-
-        RagdollModel enemy1;
-        RagdollModel enemy2;
-        RagdollModel enemy3;
+        [SerializeField] private List<Transform> m_SpawnPoints;
+        [SerializeField] private int m_PreloadEnemiesNumber = 10;
 
         RagdollModel.Factory m_RagdollFactory;
+
+        List<RagdollModel> m_PreloadedEnemies = new List<RagdollModel>();
+
+        private PositionAndEnemy[] m_Enemies;
         [Inject]
         void Construct(RagdollModel.Factory ragdollFactory)
         {
@@ -31,45 +36,45 @@ namespace Prototype
 
         private void Start()
         {
-            for (int i = 0; i < preloadedEnemies; i++)
+            for (int i = 0; i < m_PreloadEnemiesNumber; i++)
             {
                 var enemy = m_RagdollFactory.Create();
                 enemy.gameObject.SetActive(false);
-                preloaded.Add(enemy);
+                m_PreloadedEnemies.Add(enemy);
             }
 
-            SpawnEnemy();
-            SpawnEnemy();
-            SpawnEnemy();
+
+            m_Enemies = new PositionAndEnemy[m_SpawnPoints.Count];
+
+            for (int i = 0; i < m_SpawnPoints.Count; i++)
+            {
+                m_Enemies[i] = new PositionAndEnemy
+                {
+                    SpawnPoint = m_SpawnPoints[i]
+                };
+
+                SpawnEnemy();
+            }
+
         }
-        List<RagdollModel> preloaded = new List<RagdollModel>();
+     
         public void SpawnEnemy()
         {
-            if (preloaded.Count > 0)
+            if (m_PreloadedEnemies.Count > 0)
             {
-                var enemy = preloaded[0];
-                if (!enemy1)
+                for (int i = 0; i < m_Enemies.Length; i++)
                 {
-                    enemy1 = enemy;
-                    preloaded.Remove(enemy1);
-                    enemy1.gameObject.SetActive(true);
-                    enemy1.transform.position = m_SpawnPoint1.position;
+                    if (!m_Enemies[i].Enemy)
+                    {
+                        var enemy = m_PreloadedEnemies[0];
+                        m_PreloadedEnemies.Remove(enemy);
+                        enemy.gameObject.SetActive(true);
+                        enemy.transform.position = m_Enemies[i].SpawnPoint.position;
+                        m_Enemies[i].Enemy = enemy;
+                        return;
+                    }
                 }
-                else if (!enemy2)
-                {
-                    enemy2 = enemy;
-                    preloaded.Remove(enemy2);
-                    enemy2.gameObject.SetActive(true);
-                    enemy2.transform.position = m_SpawnPoint2.position;
-                }
-                else if (!enemy3)
-                {
-                    enemy3 = enemy;
-                    preloaded.Remove(enemy3);
-                    enemy3.gameObject.SetActive(true);
-                    enemy3.transform.position = m_SpawnPoint3.position;
-                }
-            }
+            }          
 
         }
 
