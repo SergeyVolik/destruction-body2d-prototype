@@ -53,7 +53,7 @@ namespace Prototype
                     SpawnPoint = m_SpawnPoints[i]
                 };
 
-                //SpawnEnemy();
+                SpawnEnemy();
             }
 
         }

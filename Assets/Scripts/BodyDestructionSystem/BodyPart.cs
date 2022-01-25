@@ -64,9 +64,11 @@ namespace Prototype
 
         }
 
+        bool m_CellsActivated = true;
         private void Awake()
         {
             m_Joint = GetComponent<HingeJoint2D>();
+            DeactivateAllBodyCells();
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
@@ -77,12 +79,48 @@ namespace Prototype
                 m_RagdollModel.Activate();
                 var vector = (transform.position - collision.transform.position).normalized;
                 Rigidbody2D.AddForce(vector * m_RagdollModel.Settings.bodyPushForce, ForceMode2D.Impulse);
-
+                ActivateAllBodyCells();
 
             }
 
         }
 
+       
+        void ActivateAllBodyCells()
+        {
+            if (!m_CellsActivated)
+            {
+                m_CellsActivated = true;
+                m_Renderer.enabled = false;
+                for (int i = 0; i < BodyCellLines.Length; i++)
+                {
+                    var cells = BodyCellLines[i].Cells;
+
+                    for (int j = 0; j < cells.Length; j++)
+                    {
+                        cells[j].gameObject.SetActive(true);
+                    }
+                }
+            }
+        }
+
+        void DeactivateAllBodyCells()
+        {
+            if (m_CellsActivated)
+            {
+                m_CellsActivated = false;
+                m_Renderer.enabled = true;
+                for (int i = 0; i < BodyCellLines.Length; i++)
+                {
+                    var cells = BodyCellLines[i].Cells;
+
+                    for (int j = 0; j < cells.Length; j++)
+                    {
+                        cells[j].gameObject.SetActive(false);
+                    }
+                }
+            }
+        }
         bool m_Cutted = false;
 
 

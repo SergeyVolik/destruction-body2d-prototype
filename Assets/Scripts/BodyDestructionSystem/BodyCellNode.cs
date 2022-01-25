@@ -30,7 +30,6 @@ namespace Prototype
         {
             m_Health.Init(100);
             m_Transform = transform;
-            m_Rigidbody2D.Sleep();
         }
 
         public void ConnectCells(BodyCellNode topCell, BodyCellNode bottomCell, BodyCellNode leftCell, BodyCellNode rightCell)

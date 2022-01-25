@@ -18,8 +18,7 @@ namespace Prototype
 
         private IEnumerator Despawn()
         {
-            yield return null;
-            yield return null;
+            yield return new WaitForSeconds(0.1f);
             m_Pool.Despawn(this);
         }
 
