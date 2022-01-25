@@ -407,7 +407,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6285982313499741676}
-  - component: {fileID: 7665834688127133449}
+  - component: {fileID: 3962248044125281589}
   m_Layer: 0
   m_Name: Laser
   m_TagString: Untagged
@@ -432,7 +432,7 @@ Transform:
   m_Father: {fileID: 7945551490323506929}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7665834688127133449
+--- !u!114 &3962248044125281589
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -441,7 +441,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4394209987088043264}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d967e557767dcf940a1d557dd1b5c555, type: 3}
+  m_Script: {fileID: 11500000, guid: 7e238c2c39abf1b44988d9dfd6b403d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_BulletSpawnPoint: {fileID: 4073250725710033775}
@@ -454,7 +454,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2640947824565109033}
-  - component: {fileID: 4251676083825430715}
+  - component: {fileID: 7611039382166541809}
   m_Layer: 0
   m_Name: Cannon
   m_TagString: Untagged
@@ -479,7 +479,7 @@ Transform:
   m_Father: {fileID: 7945551490323506929}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4251676083825430715
+--- !u!114 &7611039382166541809
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -488,7 +488,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5374218808835523648}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d967e557767dcf940a1d557dd1b5c555, type: 3}
+  m_Script: {fileID: 11500000, guid: 5811248ba6dc370478b2ec50af8ce93f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_BulletSpawnPoint: {fileID: 8545557753979349426}
@@ -532,9 +532,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4025481525052326999}
-  - component: {fileID: 7178689965871233360}
+  - component: {fileID: 3546661852275156172}
   m_Layer: 0
-  m_Name: RocketLauncher
+  m_Name: GrenadeLauncher
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -557,7 +557,7 @@ Transform:
   m_Father: {fileID: 7945551490323506929}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7178689965871233360
+--- !u!114 &3546661852275156172
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -566,7 +566,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6748645996444776353}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d967e557767dcf940a1d557dd1b5c555, type: 3}
+  m_Script: {fileID: 11500000, guid: afa748caa00c6574ca3c485ab8ea9c61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_BulletSpawnPoint: {fileID: 5606626013653436047}
@@ -616,10 +616,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 417a9dc94347ec14281518732add20bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Pistol: {fileID: 7945551490547329162}
-  m_Laser: {fileID: 4394209987088043264}
-  m_RocketLauncher: {fileID: 6748645996444776353}
-  m_Cannon: {fileID: 5374218808835523648}
+  m_Pistol: {fileID: 7945551490547329160}
+  m_Laser: {fileID: 3962248044125281589}
+  m_GrenadeLauncher: {fileID: 3546661852275156172}
+  m_Cannon: {fileID: 7611039382166541809}
+  m_Hand: {fileID: 7945551490323506929}
 --- !u!210 &1270014784100823941
 SortingGroup:
   m_ObjectHideFlags: 0

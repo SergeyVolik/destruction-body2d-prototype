@@ -44,13 +44,13 @@ namespace Prototype
 
         void SelectCannon_ClickEvent()
         {
-            m_Inventory.CurrentGun = Gun.Cannon;
+            m_Inventory.CurrentGun = GunType.Cannon;
             UpdateText();
         }
 
         void SelectPistol_ClickEvent()
         {
-            m_Inventory.CurrentGun = Gun.Pistol;
+            m_Inventory.CurrentGun = GunType.Pistol;
             UpdateText();
         }
 
@@ -61,13 +61,13 @@ namespace Prototype
 
         void SelectLaser_ClickEvent()
         {
-            m_Inventory.CurrentGun = Gun.Laser;
+            m_Inventory.CurrentGun = GunType.Laser;
             UpdateText();
 
         }
         void SelectRocketLauncher_ClickEvent()
         {
-            m_Inventory.CurrentGun = Gun.RocketLauncher;
+            m_Inventory.CurrentGun = GunType.RocketLauncher;
             UpdateText();
 
         }

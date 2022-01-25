@@ -10,9 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 871191927428410997}
   - component: {fileID: 871191927428410995}
-  - component: {fileID: 871191927428410993}
-  - component: {fileID: 2996885571224610622}
-  - component: {fileID: 6853885994659422226}
   - component: {fileID: 7488991922552156845}
   - component: {fileID: 6233184009685820330}
   m_Layer: 7
@@ -59,54 +56,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &871191927428410993
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 871191927428410992}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ba029e0ef1953648b91a3ca6dff6bb6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 0
---- !u!114 &2996885571224610622
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 871191927428410992}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08eca9f7688a0a24685b89133b020c8e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _scriptableObjectInstallers: []
-  _monoInstallers: []
-  _installerPrefabs: []
-  _autoRun: 1
-  _kernel: {fileID: 0}
---- !u!114 &6853885994659422226
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 871191927428410992}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0166d8ff8d905b048b2448179e1f5d11, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _components:
-  - {fileID: 871191927428410995}
-  _identifier: 
-  _useSceneContext: 0
-  _context: {fileID: 2996885571224610622}
-  _bindType: 0
 --- !u!61 &7488991922552156845
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -145,7 +94,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63ea92009eb4643408106d301bac16cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0
 --- !u!1 &4229584635989256541
 GameObject:
   m_ObjectHideFlags: 0
