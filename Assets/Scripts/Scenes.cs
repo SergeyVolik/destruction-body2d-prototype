@@ -5,6 +5,7 @@
     {
         MainScene = 0,
         StressTestScene = 1,
-        SmallScene = 2
+        SmallScene = 2,
+        ShopScene = 3
     }
 }
