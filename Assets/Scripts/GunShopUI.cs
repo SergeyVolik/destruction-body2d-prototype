@@ -11,6 +11,7 @@ namespace Prototype
         [SerializeField] private Button m_SelectPistolButton;
         [SerializeField] private Button m_SelectLaserButton;
         [SerializeField] private Button m_SelectRocketLauncherButton;
+        [SerializeField] private Button m_SelectCannonButton;
 
         [SerializeField] private TMPro.TMP_Text m_CurrentGunText;
 
@@ -24,6 +25,8 @@ namespace Prototype
 
         private void OnEnable()
         {
+            m_SelectCannonButton.onClick.AddListener(SelectCannon_ClickEvent);
+
             m_SelectLaserButton.onClick.AddListener(SelectLaser_ClickEvent);
             m_SelectPistolButton .onClick.AddListener(SelectPistol_ClickEvent);
             m_SelectRocketLauncherButton.onClick.AddListener(SelectRocketLauncher_ClickEvent);
@@ -32,10 +35,17 @@ namespace Prototype
 
         private void OnDisable()
         {
+            m_SelectCannonButton.onClick.RemoveListener(SelectCannon_ClickEvent);
             m_SelectLaserButton.onClick.RemoveListener(SelectLaser_ClickEvent);
             m_SelectPistolButton.onClick.RemoveListener(SelectPistol_ClickEvent);
             m_SelectRocketLauncherButton.onClick.RemoveListener(SelectRocketLauncher_ClickEvent);
 
+        }
+
+        void SelectCannon_ClickEvent()
+        {
+            m_Inventory.CurrentGun = Gun.Cannon;
+            UpdateText();
         }
 
         void SelectPistol_ClickEvent()

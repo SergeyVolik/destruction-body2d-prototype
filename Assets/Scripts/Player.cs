@@ -13,7 +13,7 @@ namespace Prototype
         [SerializeField] private GameObject m_Pistol;
         [SerializeField] private GameObject m_Laser;
         [SerializeField] private GameObject m_RocketLauncher;
-
+        [SerializeField] private GameObject m_Cannon;
         [Inject]
         void Construct(PlayerInventory inventory)
         {
@@ -34,11 +34,12 @@ namespace Prototype
                     break;
                 case Gun.Laser:
                     m_Laser.SetActive(true);
-
                     break;
                 case Gun.RocketLauncher:
                     m_RocketLauncher.SetActive(true);
-
+                    break;
+                case Gun.Cannon:
+                    m_Cannon.SetActive(true);
                     break;
                 default:
                     break;
