@@ -2028,6 +2028,7 @@ GameObject:
   - component: {fileID: 863412387}
   - component: {fileID: 863412386}
   - component: {fileID: 863412385}
+  - component: {fileID: 863412388}
   m_Layer: 5
   m_Name: ReloadSceneButton
   m_TagString: Untagged
@@ -2138,6 +2139,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 863412383}
   m_CullTransparentMesh: 1
+--- !u!114 &863412388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 863412383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0217f8b9ed5c7f645898cdd55db3d927, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Scene: 1
 --- !u!1 &877742163
 GameObject:
   m_ObjectHideFlags: 0
@@ -2880,7 +2894,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc56d482ba49d6e4dabeae2870292668, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReloadSceneButton: {fileID: 863412385}
   m_SpawnEnemyButton: {fileID: 1543692276}
   m_ToggleSlowmotion: {fileID: 1447404257}
 --- !u!1 &1146606160

@@ -9,7 +9,6 @@ namespace Prototype
 {
     public class PrototypeSceneUI : MonoBehaviour
     {
-        [SerializeField] private Button m_ReloadSceneButton;
         [SerializeField] private Button m_SpawnEnemyButton;
         [SerializeField] private Toggle m_ToggleSlowmotion;
 
@@ -24,7 +23,7 @@ namespace Prototype
 
         private void OnEnable()
         {
-            m_ReloadSceneButton.onClick.AddListener(ReloadScene);
+
             m_SpawnEnemyButton.onClick.AddListener(SpawnEnemy);
             m_ToggleSlowmotion.onValueChanged.AddListener(OnToggleSlowmotion);
 
@@ -33,15 +32,10 @@ namespace Prototype
 
         private void OnDisable()
         {         
-            m_ReloadSceneButton.onClick.RemoveListener(ReloadScene);
             m_SpawnEnemyButton.onClick.RemoveListener(SpawnEnemy);
             m_ToggleSlowmotion.onValueChanged.RemoveListener(OnToggleSlowmotion);
         }
 
-        void ReloadScene()
-        {
-            SceneManager.LoadScene(0);
-        }
 
         void SpawnEnemy()
         {
