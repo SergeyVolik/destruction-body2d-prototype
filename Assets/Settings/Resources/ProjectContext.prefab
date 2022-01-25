@@ -74,3 +74,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edbec281441e71e4fbd6ed2e059f149e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_CannonBallPrefab: {fileID: 3792924437079028542, guid: f8a5952509700dd44a2ea089035c8da1, type: 3}
+  m_GrenadeProjectile: {fileID: -7019400973897838883, guid: ba6de70d4edd372499ecc7410f1bd371, type: 3}
+  m_LaserProjectile: {fileID: 6233184009685820330, guid: 48049a7045a76c743bb1cc1979622b52, type: 3}
+  m_PistolBullet: {fileID: -3777315317026814696, guid: a42e527344fcfaa46b5566a635b0103b, type: 3}

@@ -13,6 +13,20 @@ namespace Prototype
         protected Rigidbody2D m_RB;
         protected Transform m_Transform;
 
+        protected float m_DespawnTime = 0.1f;
+
+        private IEnumerator Despawn_CO()
+        {
+            yield return new WaitForSeconds(m_DespawnTime);
+            Despawn();
+        }
+
+        protected virtual void OnEnable()
+        {
+            StartCoroutine(Despawn_CO());
+        }
+   
+
         protected virtual void Start()
         {
             m_RB = GetComponent<Rigidbody2D>();
@@ -24,7 +38,7 @@ namespace Prototype
             m_RB.AddForce(vector, ForceMode2D.Impulse);
         }
 
-        protected abstract void Accept(IProjectile2DVisitor visitor);
+      
 
         protected virtual void OnTriggerEnter2D(Collider2D collision)
         {
@@ -33,6 +47,9 @@ namespace Prototype
                 Accept(visitor);
             }
         }
-       
+
+        protected abstract void Despawn();
+        protected abstract void Accept(IProjectile2DVisitor visitor);
+
     }
 }

@@ -18,20 +18,21 @@ namespace Prototype
         {
             m_Pool = pool;
         }
+
+        private void Awake()
+        {
+            m_DespawnTime = 0.1f;
+        }
+        protected override void Despawn()
+        {
+            m_Pool.Despawn(this);
+        }
+
         protected override void Accept(IProjectile2DVisitor visitor)
         {
             visitor.Visit(this);
         }
-        private IEnumerator Despawn()
-        {
-            yield return new WaitForSeconds(0.1f);
-            m_Pool.Despawn(this);
-        }
 
-        private void OnEnable()
-        {
-            StartCoroutine(Despawn());
-        }
 
         public class Pool : MemoryPool<LaserProjectile>
         {

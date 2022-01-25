@@ -17,11 +17,20 @@ namespace Prototype
         {
             m_Pool = pool;
         }
-
+        private void Awake()
+        {
+            m_DespawnTime = 8f;
+        }
+        protected override void Despawn()
+        {
+            m_Pool.Despawn(this);
+        }
         protected override void Accept(IProjectile2DVisitor visitor)
         {
             visitor.Visit(this);
         }
+
+       
 
         public class Pool : MemoryPool<CannonBall>
         {
