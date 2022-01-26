@@ -79,3 +79,4 @@ MonoBehaviour:
   m_GrenadeProjectile: {fileID: -7019400973897838883, guid: ba6de70d4edd372499ecc7410f1bd371, type: 3}
   m_LaserProjectile: {fileID: 6233184009685820330, guid: 48049a7045a76c743bb1cc1979622b52, type: 3}
   m_PistolBullet: {fileID: -3777315317026814696, guid: a42e527344fcfaa46b5566a635b0103b, type: 3}
+  m_ExplosionVFX: {fileID: 3467130676855272839, guid: 8651be702b2bdb3499fe3a2ee00b5106, type: 3}

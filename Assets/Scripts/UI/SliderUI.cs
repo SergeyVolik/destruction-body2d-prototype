@@ -65,7 +65,7 @@ namespace Prototype
 
             if (m_CurrentSlideIndex == -1)
             {
-                m_CurrentSlideIndex = 0;
+                m_CurrentSlideIndex = m_Slides.Length - 1;
             }
 
             m_Slides[m_CurrentSlideIndex].gameObject.SetActive(true);

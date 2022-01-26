@@ -12,14 +12,16 @@ namespace Prototype
     {
         private GrenadeProjectile.Pool m_Pool;
         private GrenadeLauncherSettings m_Settings;
+        private ExplosionVFX.Pool m_ExplosionPool;
 
         public GrenadeLauncherSettings Settings => m_Settings;
 
         [Inject]
-        void Construct(GrenadeProjectile.Pool pool, GrenadeLauncherSettings settings)
+        void Construct(GrenadeProjectile.Pool pool, GrenadeLauncherSettings settings, ExplosionVFX.Pool explosionPool)
         {
             m_Pool = pool;
             m_Settings = settings;
+            m_ExplosionPool = explosionPool;
         }
 
         protected override void Awake()
@@ -46,11 +48,12 @@ namespace Prototype
         {
             if (!Exploded)
             {
+
                 Exploded = true;
 
-                Despawn();
-                StopAllCoroutines();
+              
                 var position = m_Transform.position;
+                
                 var colliders = Physics2D.OverlapCircleAll(position, m_Settings.explosionRange);
 
                 for (int i = 0; i < colliders.Length; i++)
@@ -75,6 +78,13 @@ namespace Prototype
                     }
                 }
 
+
+                var particle = m_ExplosionPool.Spawn();
+                particle.transform.position = position;
+                particle.Play();
+
+                Despawn();
+                StopAllCoroutines();
             }
         }
         public class Pool : MemoryPool<GrenadeProjectile>

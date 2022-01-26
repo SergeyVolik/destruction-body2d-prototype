@@ -41,4 +41,4 @@ MonoBehaviour:
   m_GrenadeLauncherSettings:
     damage: 9999
     projectileSpeed: 70
-    explosionRange: 1.5
+    explosionRange: 0.8

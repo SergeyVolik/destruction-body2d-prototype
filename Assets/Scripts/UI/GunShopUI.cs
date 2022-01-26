@@ -25,6 +25,9 @@ namespace Prototype
 
         private void OnEnable()
         {
+
+            m_CurrentGunText.text = m_Inventory.CurrentGun.ToString();
+
             m_SelectCannonButton.onClick.AddListener(SelectCannon_ClickEvent);
 
             m_SelectLaserButton.onClick.AddListener(SelectLaser_ClickEvent);

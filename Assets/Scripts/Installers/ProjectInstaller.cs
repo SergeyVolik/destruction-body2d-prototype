@@ -13,12 +13,14 @@ namespace Prototype
         [SerializeField] private LaserProjectile m_LaserProjectile;
         [SerializeField] private PistolBullet m_PistolBullet;
 
+        [SerializeField] private ExplosionVFX m_ExplosionVFX;
 
         public override void InstallBindings()
         {
             Container.Bind<PlayerInventory>().FromNew().AsSingle();
 
             InstallPoolsOfProjectiles();
+            InstallVFX();
         }
 
         private void InstallPoolsOfProjectiles()
@@ -46,6 +48,16 @@ namespace Prototype
                 .FromComponentInNewPrefab(m_PistolBullet)
                 .WithGameObjectName("PistolBullet")
                 .UnderTransformGroup("PistolBullets");
+            
+        }
+
+        private void InstallVFX()
+        {
+            Container.BindMemoryPool<ExplosionVFX, ExplosionVFX.Pool>()
+               .WithInitialSize(10)
+               .FromComponentInNewPrefab(m_ExplosionVFX)
+               .WithGameObjectName("ExplosionVFX")
+               .UnderTransformGroup("ExplosionVFXes");
         }
     }
 
