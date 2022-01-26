@@ -32,7 +32,6 @@ namespace Prototype
     public class BodyPart : MonoBehaviour, IDamageable
     {
 
-
         [SerializeField] public BodyCellLine[] BodyCellLines;
         [SerializeField] private bool m_CheckSliceHirozontal;
         [SerializeField] private JointPoints[] m_JointPoints;
@@ -47,6 +46,7 @@ namespace Prototype
         private SpriteRenderer m_Renderer;
         private HingeJoint2D m_Joint;
         private RagdollModel m_RagdollModel;
+        private SlowmotionManager m_SlowmotionManager;
         private Transform m_Transform;
         private bool m_Cutted = false;
         private Dictionary<int, BodyCellNode> m_HorizontalDeadNodes = new Dictionary<int, BodyCellNode>();
@@ -63,13 +63,15 @@ namespace Prototype
             BoxCollider2D boxCollider,
             SpriteRenderer renderer,
             Rigidbody2D rigidbody2D,
-            RagdollModel ragdollModel)
+            RagdollModel ragdollModel,
+            SlowmotionManager slowmotionManager)
         {
             m_CellsSettings = settings;
             m_BoxCollider2D = boxCollider;
             m_Renderer = renderer;
             m_Rigidbody2D = rigidbody2D;
             m_RagdollModel = ragdollModel;
+            m_SlowmotionManager = slowmotionManager;
             InitBodyCells();
         }
 
@@ -291,6 +293,7 @@ namespace Prototype
                         m_BodySubPart1.Rigidbody2D.velocity = Rigidbody2D.velocity;
                         m_RagdollModel.Activate();
                         Rigidbody2D.AddForce(m_PushBodyForce * m_RagdollModel.Settings.bodyPushForce, ForceMode2D.Impulse);
+                        m_SlowmotionManager.DoSlowmotion();
 
                     }
                     else if (!m_CheckSliceHirozontal && IsCuttedVertical())
@@ -302,6 +305,7 @@ namespace Prototype
                         m_BodySubPart1.Rigidbody2D.velocity = Rigidbody2D.velocity;
                         m_RagdollModel.Activate();
                         Rigidbody2D.AddForce(m_PushBodyForce * m_RagdollModel.Settings.bodyPushForce, ForceMode2D.Impulse);
+                        m_SlowmotionManager.DoSlowmotion();
                     }
 
                 }
