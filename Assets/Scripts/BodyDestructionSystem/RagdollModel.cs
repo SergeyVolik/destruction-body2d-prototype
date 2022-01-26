@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,9 @@ namespace Prototype
 
         private RagdollSettings m_Settings;
         public RagdollSettings Settings => m_Settings;
+
+        public event Action OnActivated;
+
         [Inject]
         void Construct(RagdollSettings settings)
         {
@@ -25,6 +29,8 @@ namespace Prototype
         {
             if (Activated)
                 return;
+
+            OnActivated?.Invoke();
 
             Activated = true;
 
