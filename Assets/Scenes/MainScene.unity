@@ -1274,7 +1274,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2c4e27a906be47429fe93c76bbb817d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Description: StressTestBuild
+  m_Description: ShopAndGuns
   m_Skin: {fileID: 11400000, guid: bb483c4e250e50547ac3d7688e164c1f, type: 2}
 --- !u!1 &1973991236
 GameObject:
