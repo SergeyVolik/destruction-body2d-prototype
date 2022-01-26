@@ -9,7 +9,6 @@ namespace Prototype
     {
 
         [SerializeField] private CellsSettings m_CellsSettings;
-        [SerializeField] private ShootingSettings m_ShoottingSettings;
         [SerializeField] private SlowmotionSettings m_SlowmotionSettings;
 
         [SerializeField] private RagdollSettings m_RagdollSettings;
@@ -30,7 +29,6 @@ namespace Prototype
 
         private void InstallGunSettings()
         {
-            Container.BindInstance(m_ShoottingSettings);
             Container.BindInstance(m_PistolSettings);
             Container.BindInstance(m_CannonSettings);
             Container.BindInstance(m_LaserSettings);
@@ -42,30 +40,21 @@ namespace Prototype
     [Serializable]
     public class CellsSettings
     {
-        public Color maxHealthColor;
-        public Color minHealthColor;
 
-        public int maxHealth;
-        public float cellSize;
-        public float pushCellForce = 1000;
+        public Settings settings;
 
+        [Serializable]
+        public struct Settings
+        {
+            public Color maxHealthColor;
+            public Color minHealthColor;
+
+            public int maxHealth;
+            public float cellSize;
+            public float pushCellForce;
+        }
     }
 
-    [Serializable]
-    public class ShootingSettings
-    {
-       
-        public float bulletDamageMult = 10;
-        public float bulletSpeedMax = 1000f;
-
-        public float bulletSpeedMin = 1000f;
-        public float delayBetweenShots = 0.1f;
-
-      
-
-
-       
-    }
 
     [Serializable]
     public abstract class GunData
@@ -73,6 +62,8 @@ namespace Prototype
         public int damage;
         public float projectileSpeed;
     }
+
+    
 
     [Serializable]
     public class PistolSettings : GunData

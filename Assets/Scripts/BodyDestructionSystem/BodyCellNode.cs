@@ -26,7 +26,7 @@ namespace Prototype
 
         public BodyPart BodyPart;
         private Transform m_Transform;
-        private CellsSettings m_CellSettings;
+        private CellsSettings.Settings m_CellSettings;
 
         void Awake()
         {
@@ -36,7 +36,7 @@ namespace Prototype
 
         public void Construct(CellsSettings cellSettings)
         {
-            m_CellSettings = cellSettings;
+            m_CellSettings = cellSettings.settings;
             m_Health.Init(m_CellSettings.maxHealth);
         }
 
@@ -62,7 +62,7 @@ namespace Prototype
                     var rb = node.m_Rigidbody2D;
                     var trans = node.m_Transform;
 
-                    var forceVector = node.m_Transform.position - damagePos;
+                    var forceVector = trans.position - damagePos;
                     rb.bodyType = RigidbodyType2D.Dynamic;
                     rb.AddForce(forceVector.normalized * m_CellSettings.pushCellForce, ForceMode2D.Impulse);
                     trans.parent = null;

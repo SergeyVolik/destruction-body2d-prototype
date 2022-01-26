@@ -7,13 +7,11 @@ namespace Prototype
 {
     public class Laser : Gun
     {
-        private ShootingSettings m_Settings;
         private LaserProjectile.Pool m_LaserProjectilesPool;
 
         [Inject]
-        void Construct(ShootingSettings settings, LaserProjectile.Pool pool)
+        void Construct(LaserProjectile.Pool pool)
         {
-            m_Settings = settings;
             m_LaserProjectilesPool = pool;
 
         }

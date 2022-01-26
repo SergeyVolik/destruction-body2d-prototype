@@ -18,11 +18,12 @@ MonoBehaviour:
     maxHealth: 100
     cellSize: 0.1
     pushCellForce: 5
-  m_ShoottingSettings:
-    bulletDamageMult: 100000
-    bulletSpeedMax: 200
-    bulletSpeedMin: 200
-    delayBetweenShots: 0.1
+    settings:
+      maxHealthColor: {r: 1, g: 1, b: 1, a: 1}
+      minHealthColor: {r: 1, g: 0, b: 0, a: 1}
+      maxHealth: 100
+      cellSize: 0.1
+      pushCellForce: 5
   m_SlowmotionSettings:
     slowdownFactor: 0.05
     slowdownLength: 2
