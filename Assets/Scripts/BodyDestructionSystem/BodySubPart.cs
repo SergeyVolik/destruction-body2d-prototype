@@ -25,7 +25,9 @@ namespace Prototype
             {
                 parent = m_Transform.parent,
                 localPosition = m_Transform.localPosition,
-                localRotation = m_Transform.localRotation
+                localRotation = m_Transform.localRotation,
+                localScale = m_Transform.localScale
+
             };
 
             gameObject.SetActive(false);

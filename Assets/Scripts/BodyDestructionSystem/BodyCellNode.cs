@@ -39,7 +39,9 @@ namespace Prototype
             {
                 parent = m_Transform.parent,
                 localPosition = m_Transform.localPosition,
-                localRotation = m_Transform.localRotation
+                localRotation = m_Transform.localRotation,
+                localScale = m_Transform.localScale
+                
             };
 
 
@@ -126,9 +128,7 @@ namespace Prototype
             m_Health.ResetValues(m_CellSettings.maxHealth);
             m_SpriteRenderer.color = m_CellSettings.maxHealthColor;
 
-            m_Rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
-            m_Rigidbody2D.velocity = Vector3.zero;
-            m_Rigidbody2D.angularVelocity = 0;
+            Rigidbody2DUtils.ResetValues(m_Rigidbody2D);
 
             gameObject.SetActive(false);
 

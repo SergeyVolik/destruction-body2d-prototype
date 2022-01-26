@@ -11,6 +11,13 @@ namespace Prototype
         [SerializeField] private BodyCellNode[] m_Points;
         [SerializeField] private HingeJoint2D m_ConnectedJoint;
 
+        Rigidbody2D m_SavedConnectedBody;
+
+        void Awake()
+        {
+            m_SavedConnectedBody = m_ConnectedJoint.connectedBody;
+        }
+
         public bool CheckJointConnection()
         {
             int numberOfDeadPoints = 0;
@@ -36,5 +43,7 @@ namespace Prototype
             m_ConnectedJoint.connectedBody = null;
             m_ConnectedJoint.enabled = false;
         }
+
+
     }
 }

@@ -32,6 +32,7 @@ namespace Prototype
         private void OnEnable()
         {
             m_RagdollModel.OnActivated += StopMove;
+            IsMoving = true;
         }
 
         private void OnDisable()

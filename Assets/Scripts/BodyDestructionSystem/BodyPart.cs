@@ -51,10 +51,11 @@ namespace Prototype
 
         private Transform m_Transform;
         private TransformSavedData m_TransformSavedData;
+        private Rigidbody2D m_SavedHingeJointConnection;
 
         private bool m_Cutted = false;
-        bool m_CellsActivated = false;
-        bool m_NeedCheckJoints = true;
+        private bool m_CellsActivated = false;
+        private bool m_NeedCheckJoints = false;
 
         private BodyCellNode[] m_HorizontalDeadNodes;
         private BodyCellNode[] m_VerticalDeadNodes;
@@ -86,17 +87,26 @@ namespace Prototype
 
         private void Awake()
         {
+            m_Transform = transform;
+
             m_HorizontalDeadNodes = new BodyCellNode[BodyCellLines[0].Cells.Length];
             m_VerticalDeadNodes = new BodyCellNode[BodyCellLines.Length];
 
             m_Joint = GetComponent<HingeJoint2D>();
-            m_Transform = transform;
+
+            if (m_Joint)
+            {
+                m_SavedHingeJointConnection = m_Joint.connectedBody;
+            }
+           
 
             m_TransformSavedData = new TransformSavedData()
             {
                 parent = m_Transform.parent,
                 localPosition = m_Transform.localPosition,
-                localRotation = m_Transform.localRotation
+                localRotation = m_Transform.localRotation,
+                localScale = m_Transform.localScale
+
             };
 
         }
@@ -122,34 +132,32 @@ namespace Prototype
 
                 if (!m_Cutted)
                 {
-
                     if (m_CheckSliceHirozontal && IsCuttedHorizontal())
                     {
 
                         CollectCellsFromHorizontalDeadNodes();
-
-                        m_Cutted = true;
-                        m_BodySubPart1.ActivateAndConnectJoints();
-                        m_BodySubPart1.Rigidbody2D.velocity = Rigidbody2D.velocity;
-                        m_RagdollModel.Activate();
-                        Rigidbody2D.AddForce(m_PushBodyForce * m_RagdollModel.Settings.bodyPushForce, ForceMode2D.Impulse);
-                        m_SlowmotionManager.DoSlowmotion();
+                        ActivateRagdoll();
 
                     }
                     else if (!m_CheckSliceHirozontal && IsCuttedVertical())
                     {
                         CollectCellsFromVerticalDeadNodes();
+                        ActivateRagdoll();
 
-                        m_Cutted = true;
-                        m_BodySubPart1?.ActivateAndConnectJoints();
-                        m_BodySubPart1.Rigidbody2D.velocity = Rigidbody2D.velocity;
-                        m_RagdollModel.Activate();
-                        Rigidbody2D.AddForce(m_PushBodyForce * m_RagdollModel.Settings.bodyPushForce, ForceMode2D.Impulse);
-                        m_SlowmotionManager.DoSlowmotion();
                     }
 
                 }
             }
+        }
+
+        private void ActivateRagdoll()
+        {
+            m_Cutted = true;
+            m_BodySubPart1.ActivateAndConnectJoints();
+            m_BodySubPart1.Rigidbody2D.velocity = Rigidbody2D.velocity;
+            m_RagdollModel.Activate();
+            Rigidbody2D.AddForce(m_PushBodyForce * m_RagdollModel.Settings.bodyPushForce, ForceMode2D.Impulse);
+            m_SlowmotionManager.DoSlowmotion();
         }
 
         private void InitBodyCells()
@@ -204,9 +212,14 @@ namespace Prototype
 
         public void ResetValues()
         {
+            m_Cutted = false;
+            m_CellsActivated = false;
             m_Renderer.enabled = true;
             m_TransformSavedData.ResetValues(m_Transform);
 
+            Rigidbody2DUtils.ResetValues(m_Rigidbody2D);
+
+            
             for (int i = 0; i < m_HorizontalDeadNodes.Length; i++)
             {
                 m_HorizontalDeadNodes[i] = null;
@@ -227,6 +240,12 @@ namespace Prototype
             }
 
             m_BodySubPart1.ResetValues();
+
+            if (m_Joint)
+            {
+                m_Joint.connectedBody = m_SavedHingeJointConnection;
+                m_Joint.enabled = true;
+            }
         }
 
         private void CollectSubBodyCellsUp()
@@ -362,11 +381,6 @@ namespace Prototype
             return cutted;
         }
         
-    
-
-      
-
-       
         public void SetDeadCell(BodyCellNode node)
         {
 
