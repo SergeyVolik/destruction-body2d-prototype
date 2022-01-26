@@ -14,8 +14,20 @@ namespace Prototype
         [SerializeField] private HingeJoint2D[] m_ConnectTo;
 
         public Rigidbody2D Rigidbody2D => m_RB;
-        private void Start()
+
+        Transform m_Transform;
+        private TransformSavedData m_TransformSavedData;
+
+        private void Awake()
         {
+            m_Transform = transform;
+            m_TransformSavedData = new TransformSavedData()
+            {
+                parent = m_Transform.parent,
+                localPosition = m_Transform.localPosition,
+                localRotation = m_Transform.localRotation
+            };
+
             gameObject.SetActive(false);
         }
         public void ActivateAndConnectJoints()
@@ -32,6 +44,13 @@ namespace Prototype
                 rb.velocity = Vector2.zero;
                 rb.angularVelocity = 0;
             }
+
+        }
+
+        public void ResetValues()
+        {
+            m_TransformSavedData.ResetValues(m_Transform);
+            Rigidbody2DUtils.ResetValues(m_RB);
 
         }
 

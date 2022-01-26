@@ -28,18 +28,29 @@ namespace Prototype
         private Transform m_Transform;
         private CellsSettings.Settings m_CellSettings;
 
+        private TransformSavedData m_TransformSavedData;
+
         void Awake()
         {
+           
             m_Transform = transform;
+
+            m_TransformSavedData = new TransformSavedData()
+            {
+                parent = m_Transform.parent,
+                localPosition = m_Transform.localPosition,
+                localRotation = m_Transform.localRotation
+            };
+
+
             gameObject.SetActive(false);
         }
 
         public void Construct(CellsSettings cellSettings)
         {
             m_CellSettings = cellSettings.settings;
-            m_Health.Init(m_CellSettings.maxHealth);
+            m_Health.ResetValues(m_CellSettings.maxHealth);
         }
-
 
         public void ConnectCells(BodyCellNode topCell, BodyCellNode bottomCell, BodyCellNode leftCell, BodyCellNode rightCell)
         {
@@ -71,6 +82,7 @@ namespace Prototype
                 node.m_SpriteRenderer.color = Color.Lerp(m_CellSettings.minHealthColor, m_CellSettings.maxHealthColor, node.m_Health.Health / (float)node.m_Health.MaxHealth);
             }
         }
+
         public void PopulateDamage(int damage, int horizontalDepth, Vector3 damagePos)
         {
 
@@ -103,10 +115,23 @@ namespace Prototype
         }
 
 
-        IEnumerator KillWithDelay(float delay)
+
+        
+      
+
+        public void ResetValues()
         {
-            yield return new WaitForSeconds(delay);
-            Destroy(gameObject);
+            m_TransformSavedData.ResetValues(m_Transform);
+
+            m_Health.ResetValues(m_CellSettings.maxHealth);
+            m_SpriteRenderer.color = m_CellSettings.maxHealthColor;
+
+            m_Rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
+            m_Rigidbody2D.velocity = Vector3.zero;
+            m_Rigidbody2D.angularVelocity = 0;
+
+            gameObject.SetActive(false);
+
         }
 
         public void Visit(CannonBall ball)

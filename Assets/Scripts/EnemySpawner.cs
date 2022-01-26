@@ -12,7 +12,7 @@ namespace Prototype
 
     public class EnemySpawner : MonoBehaviour
     {
-        private class PositionAndEnemy 
+        private class PositionAndEnemy
         {
             public Transform SpawnPoint;
             public RagdollModel Enemy;
@@ -25,13 +25,10 @@ namespace Prototype
 
         List<RagdollModel> m_PreloadedEnemies = new List<RagdollModel>();
 
-        private PositionAndEnemy[] m_Enemies;
         [Inject]
         void Construct(RagdollModel.Factory ragdollFactory)
         {
             m_RagdollFactory = ragdollFactory;
-
-          
         }
 
         private void Start()
@@ -44,38 +41,29 @@ namespace Prototype
             }
 
 
-            m_Enemies = new PositionAndEnemy[m_SpawnPoints.Count];
-
             for (int i = 0; i < m_SpawnPoints.Count; i++)
             {
-                m_Enemies[i] = new PositionAndEnemy
-                {
-                    SpawnPoint = m_SpawnPoints[i]
-                };
-
-                SpawnEnemy();
+                SpawnEnemyInternal(m_SpawnPoints[i].position);
             }
 
         }
-     
+
         public void SpawnEnemy()
+        {
+            var spawnPoint = m_SpawnPoints[UnityEngine.Random.Range(0, m_SpawnPoints.Count)];
+            SpawnEnemyInternal(spawnPoint.position);
+
+        }
+
+        private void SpawnEnemyInternal(Vector3 spawnPos)
         {
             if (m_PreloadedEnemies.Count > 0)
             {
-                for (int i = 0; i < m_Enemies.Length; i++)
-                {
-                    if (!m_Enemies[i].Enemy)
-                    {
-                        var enemy = m_PreloadedEnemies[0];
-                        m_PreloadedEnemies.Remove(enemy);
-                        enemy.gameObject.SetActive(true);
-                        enemy.transform.position = m_Enemies[i].SpawnPoint.position;
-                        m_Enemies[i].Enemy = enemy;
-                        return;
-                    }
-                }
-            }          
-
+                var enemy = m_PreloadedEnemies[0];
+                m_PreloadedEnemies.Remove(enemy);
+                enemy.gameObject.SetActive(true);
+                enemy.transform.position = spawnPos;
+            }
         }
 
     }

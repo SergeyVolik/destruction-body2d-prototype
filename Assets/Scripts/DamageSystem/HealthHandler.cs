@@ -12,10 +12,11 @@ namespace Prototype
         public int MaxHealth => m_MaxHealth;
         public bool IsDead => m_IsDead;
 
-        public void Init(int MaxHealth)
+        public void ResetValues(int MaxHealth)
         {
             m_Health = MaxHealth;
             m_MaxHealth = MaxHealth;
+            m_IsDead = false;
         }
 
         public void ApplyDamage(int damage)

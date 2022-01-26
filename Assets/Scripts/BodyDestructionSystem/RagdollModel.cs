@@ -34,8 +34,7 @@ namespace Prototype
 
             Activated = true;
 
-            if (m_Animator)
-                m_Animator.enabled = false;
+            m_Animator.enabled = false;
 
             for (int i = 0; i < m_BodyParts.Length; i++)
             {
@@ -43,13 +42,33 @@ namespace Prototype
                 if (m_BodyParts[i].Joint && m_BodyParts[i].Joint.connectedBody)
                     m_BodyParts[i].Joint.enabled = true;
             }
+
             StartCoroutine(DestroyWithTime());
         }
 
         IEnumerator DestroyWithTime()
         {
-            yield return new WaitForSeconds(5f);
-            Destroy(gameObject);
+            yield return new WaitForSeconds(2f);
+
+           
+
+            ResetValues();
+
+            gameObject.SetActive(false);
+
+        }
+
+
+        void ResetValues()
+        {
+            Activated = false;
+
+            m_Animator.enabled = true;
+
+            for (int i = 0; i < m_BodyParts.Length; i++)
+            {
+                m_BodyParts[i].ResetValues();
+            }
         }
 
         public class Factory : PlaceholderFactory<RagdollModel> { }
