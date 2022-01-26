@@ -49,8 +49,9 @@ namespace Prototype
         private SlowmotionManager m_SlowmotionManager;
         private Transform m_Transform;
         private bool m_Cutted = false;
-        private Dictionary<int, BodyCellNode> m_HorizontalDeadNodes = new Dictionary<int, BodyCellNode>();
-        private Dictionary<int, BodyCellNode> m_VerticalDeadNodes = new Dictionary<int, BodyCellNode>();
+
+        private BodyCellNode[] m_HorizontalDeadNodes;
+        private BodyCellNode[] m_VerticalDeadNodes;
 
         public Rigidbody2D Rigidbody2D => m_Rigidbody2D;
         public HingeJoint2D Joint => m_Joint;
@@ -78,6 +79,9 @@ namespace Prototype
         bool m_CellsActivated = false;
         private void Awake()
         {
+            m_HorizontalDeadNodes = new BodyCellNode[BodyCellLines[0].Cells.Length];
+            m_VerticalDeadNodes = new BodyCellNode[BodyCellLines.Length];
+
             m_Joint = GetComponent<HingeJoint2D>();
             m_Transform = transform;
             
@@ -167,10 +171,11 @@ namespace Prototype
 
         private void CollectSubBodyCellsUp()
         {
-            var deadNodes = m_HorizontalDeadNodes.Values;
 
-            foreach (var item in deadNodes)
+            for (int j = 0; j < m_HorizontalDeadNodes.Length; j++)     
             {
+                var item = m_HorizontalDeadNodes[j];
+
                 var IndexY = item.IndexY;
                 var IndexX = item.IndexX;
 
@@ -189,10 +194,10 @@ namespace Prototype
 
         private void CollectSubBodyCellsDown()
         {
-            var deadNodes = m_HorizontalDeadNodes.Values;
-
-            foreach (var item in deadNodes)
+            for (int j = 0; j < m_HorizontalDeadNodes.Length; j++)
             {
+                var item = m_HorizontalDeadNodes[j];
+
                 var IndexY = item.IndexY;
                 var IndexX = item.IndexX;
 
@@ -213,10 +218,10 @@ namespace Prototype
         private void CollectSubBodyCellLeft()
         {
 
-            var deadNodes = m_VerticalDeadNodes.Values;
-
-            foreach (var item in deadNodes)
+            for (int j = 0; j < m_VerticalDeadNodes.Length; j++)
             {
+                var item = m_VerticalDeadNodes[j];
+
                 var indexX = item.IndexX;
                 var indexY = item.IndexY;
 
@@ -240,10 +245,11 @@ namespace Prototype
 
         private void CollectSubBodyCellRight()
         {
-            var deadNodes = m_VerticalDeadNodes.Values;
-
-            foreach (var item in deadNodes)
+            for (int j = 0; j < m_VerticalDeadNodes.Length; j++)
             {
+
+                var item = m_VerticalDeadNodes[j];
+
                 var indexX = item.IndexX;
                 var indexY = item.IndexY;
 
@@ -280,8 +286,23 @@ namespace Prototype
             m_BoxCollider2D.offset = m_CutSettings.colliderOffset;
         }
 
-        private bool IsCuttedHorizontal() => m_HorizontalDeadNodes.Count == BodyCellLines[0].Cells.Length;
-        private bool IsCuttedVertical() => m_VerticalDeadNodes.Count == BodyCellLines.Length;
+        private bool IsCuttedHorizontal() => IsAnyNullInArray(m_HorizontalDeadNodes);
+        private bool IsCuttedVertical() => IsAnyNullInArray(m_VerticalDeadNodes);
+
+        private bool IsAnyNullInArray(BodyCellNode[] array)
+        {
+            bool cutted = true;
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (array[i] == null)
+                    cutted = false;
+            }
+
+            return cutted;
+        }
+        
+    
 
         bool m_NeedCheckJoints = true;
 
@@ -302,7 +323,7 @@ namespace Prototype
                         CollectCellsFromHorizontalDeadNodes();
                       
                         m_Cutted = true;
-                        m_BodySubPart1?.ActivateAndConnectJoints();
+                        m_BodySubPart1.ActivateAndConnectJoints();
                         m_BodySubPart1.Rigidbody2D.velocity = Rigidbody2D.velocity;
                         m_RagdollModel.Activate();
                         Rigidbody2D.AddForce(m_PushBodyForce * m_RagdollModel.Settings.bodyPushForce, ForceMode2D.Impulse);
@@ -324,7 +345,7 @@ namespace Prototype
                 }
             }
         }
-        public void BodySliceCheck(BodyCellNode node)
+        public void SetDeadCell(BodyCellNode node)
         {
 
           
@@ -345,182 +366,7 @@ namespace Prototype
             }
         }
 
-        public void KillSlicedCells(BodyCellNode node)
-        {
-            switch (m_SubBodyPosition)
-            {
-                case SubBodyPosition.Left:
-                    KillLeftEntry(node);
-                    break;
-                case SubBodyPosition.Right:
-                    KillRightEntry(node);
-                    break;
-                case SubBodyPosition.Up:
-                    KillUpEntry(node);
-                    break;
-                case SubBodyPosition.Down:
-                    KillDownEntry(node);
-                    break;
-                default:
-                    break;
-            }
-
-
-        }
-        private void KillLeftEntry(BodyCellNode node)
-        {
-            if (node == null)
-                return;
-
-            node.ApplayDamageToNode(node, 100, node.transform.position);
-            node.Rigidbody2D.velocity = Rigidbody2D.velocity;
-            KillDown(node.m_BottomCell);
-            KillUp(node.m_TopCell);
-
-            KillLeftEntry(node.m_LeftCell);
-        }
-        private void KillRightEntry(BodyCellNode node)
-        {
-            if (node == null)
-                return;
-
-            node.ApplayDamageToNode(node, 100, node.transform.position);
-            node.Rigidbody2D.velocity = Rigidbody2D.velocity;
-            KillDown(node.m_BottomCell);
-            KillUp(node.m_TopCell);
-
-            KillRightEntry(node.m_RightCell);
-        }
-        private void KillDownEntry(BodyCellNode node)
-        {
-            if (node == null)
-                return;
-
-            node.ApplayDamageToNode(node, 100, node.transform.position);
-            node.Rigidbody2D.velocity = Rigidbody2D.velocity;
-            KillLeft(node.m_LeftCell);
-            KillRight(node.m_RightCell);
-
-            KillDownEntry(node.m_BottomCell);
-        }
-
-        private void KillUpEntry(BodyCellNode node)
-        {
-            if (node == null)
-                return;
-
-            node.ApplayDamageToNode(node, 100, node.transform.position);
-            node.Rigidbody2D.velocity = Rigidbody2D.velocity;
-            KillLeft(node.m_LeftCell);
-            KillRight(node.m_RightCell);
-
-            KillUpEntry(node.m_TopCell);
-        }
-        private void KillLeft(BodyCellNode node)
-        {
-
-
-            if (node == null)
-                return;
-
-            node.ApplayDamageToNode(node, 100, node.transform.position);
-            node.Rigidbody2D.velocity = Rigidbody2D.velocity;
-            KillLeft(node.m_LeftCell);
-        }
-        private void KillRight(BodyCellNode node)
-        {
-
-
-            if (node == null)
-                return;
-
-            node.ApplayDamageToNode(node, 100, node.transform.position);
-            node.Rigidbody2D.velocity = Rigidbody2D.velocity;
-            KillRight(node.m_RightCell);
-        }
-
-        private void KillUp(BodyCellNode node)
-        {
-
-
-            if (node == null)
-                return;
-
-            node.ApplayDamageToNode(node, 100, node.transform.position);
-            node.Rigidbody2D.velocity = Rigidbody2D.velocity;
-            KillRight(node.m_TopCell);
-        }
-
-        private void KillDown(BodyCellNode node)
-        {
-
-
-            if (node == null)
-                return;
-
-            node.ApplayDamageToNode(node, 100, node.transform.position);
-            node.Rigidbody2D.velocity = Rigidbody2D.velocity;
-            KillRight(node.m_BottomCell);
-        }
-        bool IsBodySliced(BodyCellNode node)
-        {
-            var result = true;
-
-            if (m_CheckSliceHirozontal)
-            {
-                CheckSliceLeft(ref result, node);
-                CheckSliceRight(ref result, node);
-            }
-            else
-            {
-                CheckSliceUp(ref result, node);
-                CheckSliceDown(ref result, node);
-            }
-
-            return result;
-        }
-
-        void CheckSliceLeft(ref bool sliced, BodyCellNode node)
-        {
-            if (node)
-            {
-                if (node.Health.IsDead == false)
-                    sliced = false;
-
-                CheckSliceLeft(ref sliced, node.m_LeftCell);
-            }
-        }
-        void CheckSliceRight(ref bool sliced, BodyCellNode node)
-        {
-            if (node)
-            {
-                if (node.Health.IsDead == false)
-                    sliced = false;
-
-                CheckSliceRight(ref sliced, node.m_RightCell);
-            }
-        }
-
-        void CheckSliceUp(ref bool sliced, BodyCellNode node)
-        {
-            if (node)
-            {
-                if (node.Health.IsDead == false)
-                    sliced = false;
-
-                CheckSliceUp(ref sliced, node.m_TopCell);
-            }
-        }
-        void CheckSliceDown(ref bool sliced, BodyCellNode node)
-        {
-            if (node)
-            {
-                if (node.Health.IsDead == false)
-                    sliced = false;
-
-                CheckSliceDown(ref sliced, node.m_BottomCell);
-            }
-        }
+        
 
         public void ApplyDamage(int damage, Vector3 pos)
         {

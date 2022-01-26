@@ -13,11 +13,6 @@ MonoBehaviour:
   m_Name: PrototypeSettings
   m_EditorClassIdentifier: 
   m_CellsSettings:
-    maxHealthColor: {r: 1, g: 1, b: 1, a: 1}
-    minHealthColor: {r: 1, g: 0, b: 0, a: 1}
-    maxHealth: 100
-    cellSize: 0.1
-    pushCellForce: 5
     settings:
       maxHealthColor: {r: 1, g: 1, b: 1, a: 1}
       minHealthColor: {r: 1, g: 0, b: 0, a: 1}
@@ -37,7 +32,7 @@ MonoBehaviour:
     damage: 9999
     projectileSpeed: 70
   m_LaserSettings:
-    damage: 50
+    damage: 100
     projectileSpeed: 0
   m_GrenadeLauncherSettings:
     damage: 9999

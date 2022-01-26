@@ -98,7 +98,7 @@ namespace Prototype
             PopulateDamage(damage, 1, damagePos);
 
             if(Health.IsDead)
-                BodyPart.BodySliceCheck(this);
+                BodyPart.SetDeadCell(this);
 
         }
 
@@ -128,7 +128,6 @@ namespace Prototype
             Profiler.BeginSample("LaserProjectile Visit");
             ApplyDamage(laserProjectile.Settings.damage, laserProjectile.transform.position);
             Profiler.EndSample();
-            Debug.Break();
 
         }
 
