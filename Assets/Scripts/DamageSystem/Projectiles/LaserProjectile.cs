@@ -26,7 +26,7 @@ namespace Prototype
         protected override void Awake()
         {
             base.Awake();
-            m_DespawnTime = 0.1f;
+            m_DespawnTime = 0.05f;
         }
         protected override void Despawn()
         {

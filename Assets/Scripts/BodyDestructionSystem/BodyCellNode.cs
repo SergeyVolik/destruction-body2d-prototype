@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Profiling;
 using Zenject;
 
 namespace Prototype
@@ -117,25 +118,33 @@ namespace Prototype
 
         public void Visit(CannonBall ball)
         {
+            Profiler.BeginSample("CannonBall Visit");
             ApplyDamage(ball.Settings.damage, ball.transform.position);
+            Profiler.EndSample();
         }
 
         public void Visit(GrenadeProjectile grenadeProjectile)
         {
-            
+            Profiler.BeginSample("GrenadeProjectile Visit");
             grenadeProjectile.Explode();
+            Profiler.EndSample();
         }
 
         public void Visit(LaserProjectile laserProjectile)
         {
+            Profiler.BeginSample("LaserProjectile Visit");
             ApplyDamage(laserProjectile.Settings.damage, laserProjectile.transform.position);
+            Profiler.EndSample();
+            Debug.Break();
+
         }
 
         public void Visit(PistolBullet pistolBullet)
         {
-
+            Profiler.BeginSample("PistolBullet Visit");
             pistolBullet.SlowBullet();
             ApplyDamage(pistolBullet.Settings.damage, pistolBullet.transform.position);
+            Profiler.EndSample();
         }
     }
 
