@@ -49,11 +49,7 @@ namespace Prototype
             m_RightCell = rightCell;
         }
 
-        IEnumerator ActivateBoxCollider(BodyCellNode node)
-        {
-            yield return new WaitForSeconds(0.1f);
-            node.m_Collider2D.isTrigger = false;
-        }
+
         public void ApplayDamageToNode(BodyCellNode node, int dmg, Vector3 damagePos)
         {
             if (node)
@@ -63,12 +59,13 @@ namespace Prototype
 
                 if (node.m_Health.IsDead)
                 {
+                    var rb = node.m_Rigidbody2D;
+                    var trans = node.m_Transform;
+
                     var forceVector = node.m_Transform.position - damagePos;
-                    node.m_Rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
-                    node.m_Rigidbody2D.AddForce(forceVector.normalized * m_CellSettings.pushCellForce, ForceMode2D.Impulse);
-                    StartCoroutine(ActivateBoxCollider(node));
-                    node.m_Transform.parent = null;
-                    node.KillWithDelay();
+                    rb.bodyType = RigidbodyType2D.Dynamic;
+                    rb.AddForce(forceVector.normalized * m_CellSettings.pushCellForce, ForceMode2D.Impulse);
+                    trans.parent = null;
                 }
 
                 node.m_SpriteRenderer.color = Color.Lerp(m_CellSettings.minHealthColor, m_CellSettings.maxHealthColor, node.m_Health.Health / (float)node.m_Health.MaxHealth);
@@ -105,10 +102,6 @@ namespace Prototype
 
         }
 
-        void KillWithDelay()
-        {
-            StartCoroutine(KillWithDelay(2f));
-        }
 
         IEnumerator KillWithDelay(float delay)
         {

@@ -167,19 +167,20 @@ namespace Prototype
 
         private void CollectSubBodyCellsUp()
         {
-            foreach (var item in m_HorizontalDeadNodes.Values)
+            var deadNodes = m_HorizontalDeadNodes.Values;
+
+            foreach (var item in deadNodes)
             {
+                var IndexY = item.IndexY;
+                var IndexX = item.IndexX;
+
                 for (int i = 0; i < BodyCellLines.Length; i++)
                 {
-                    var nodecell = BodyCellLines[i].Cells[item.IndexX];
+                    var nodecell = BodyCellLines[i].Cells[IndexX];
 
-                    if (!nodecell.IsDead)
+                    if (!nodecell.IsDead && IndexY < i)
                     {
-
-                        if (item.IndexY < i && m_BodySubPart1)
-                        {
-                            nodecell.transform.parent = m_BodySubPart1.transform;
-                        }
+                        nodecell.transform.parent = m_BodySubPart1.transform;                      
                     }
                 }
 
@@ -188,19 +189,21 @@ namespace Prototype
 
         private void CollectSubBodyCellsDown()
         {
-            foreach (var item in m_HorizontalDeadNodes.Values)
+            var deadNodes = m_HorizontalDeadNodes.Values;
+
+            foreach (var item in deadNodes)
             {
+                var IndexY = item.IndexY;
+                var IndexX = item.IndexX;
+
                 for (int i = 0; i < BodyCellLines.Length; i++)
                 {
-                    var nodecell = BodyCellLines[i].Cells[item.IndexX];
+                    var nodecell = BodyCellLines[i].Cells[IndexX];
 
-                    if (!nodecell.IsDead)
+                    if (!nodecell.IsDead && IndexY > i)
                     {
-
-                        if (item.IndexY > i && m_BodySubPart1)
-                        {
-                            nodecell.transform.parent = m_BodySubPart1.transform;
-                        }
+                         nodecell.transform.parent = m_BodySubPart1.transform;
+                        
                     }
                 }
 
@@ -209,19 +212,26 @@ namespace Prototype
 
         private void CollectSubBodyCellLeft()
         {
-            foreach (var item in m_VerticalDeadNodes.Values)
+
+            var deadNodes = m_VerticalDeadNodes.Values;
+
+            foreach (var item in deadNodes)
             {
-                for (int i = 0; i < BodyCellLines[item.IndexY].Cells.Length; i++)
+                var indexX = item.IndexX;
+                var indexY = item.IndexY;
+
+                var lineOfCells = BodyCellLines[indexY].Cells;
+
+               
+
+                for (int i = 0; i < lineOfCells.Length; i++)
                 {
-                    var nodecell = BodyCellLines[item.IndexY].Cells[i];
+                    var nodecell = lineOfCells[i];
 
-                    if (!nodecell.IsDead)
+                    if (!nodecell.IsDead && indexX > i)
                     {
-
-                        if (item.IndexX > i && m_BodySubPart1)
-                        {
-                            nodecell.transform.parent = m_BodySubPart1.transform;
-                        }
+                         nodecell.transform.parent = m_BodySubPart1.transform;
+                        
                     }
                 }
 
@@ -230,19 +240,22 @@ namespace Prototype
 
         private void CollectSubBodyCellRight()
         {
-            foreach (var item in m_VerticalDeadNodes.Values)
+            var deadNodes = m_VerticalDeadNodes.Values;
+
+            foreach (var item in deadNodes)
             {
-                for (int i = 0; i < BodyCellLines[item.IndexY].Cells.Length; i++)
+                var indexX = item.IndexX;
+                var indexY = item.IndexY;
+
+                var lineOfCells = BodyCellLines[indexY].Cells;
+              
+                for (int i = 0; i < lineOfCells.Length; i++)
                 {
-                    var nodecell = BodyCellLines[item.IndexY].Cells[i];
+                    var nodecell = lineOfCells[i];
 
-                    if (!nodecell.IsDead)
+                    if (!nodecell.IsDead && indexX < i)
                     {
-
-                        if (item.IndexX < i && m_BodySubPart1)
-                        {
-                            nodecell.transform.parent = m_BodySubPart1.transform;
-                        }
+                        nodecell.transform.parent = m_BodySubPart1.transform;
                     }
                 }
 
