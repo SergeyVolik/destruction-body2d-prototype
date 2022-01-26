@@ -23,7 +23,10 @@ namespace Prototype
             m_Health -= damage;
 
             if (m_Health <= 0)
+            {
                 m_IsDead = true;
+                m_Health = 0;
+            }
                 
         }
 

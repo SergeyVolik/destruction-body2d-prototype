@@ -55,6 +55,8 @@ namespace Prototype
         public Rigidbody2D Rigidbody2D => m_Rigidbody2D;
         public HingeJoint2D Joint => m_Joint;
 
+        private Vector2 m_PushBodyForce;
+
         [Inject]
         void Construct(
             CellsSettings settings,
@@ -68,7 +70,7 @@ namespace Prototype
             m_Renderer = renderer;
             m_Rigidbody2D = rigidbody2D;
             m_RagdollModel = ragdollModel;
-
+            InitBodyCells();
         }
 
         bool m_CellsActivated = false;
@@ -76,23 +78,28 @@ namespace Prototype
         {
             m_Joint = GetComponent<HingeJoint2D>();
             m_Transform = transform;
-            //DeactivateAllBodyCells();
+            
         }
 
+        private void InitBodyCells()
+        {
+            for (int i = 0; i < BodyCellLines.Length; i++)
+            {
+                for (int j = 0; j < BodyCellLines[i].Cells.Length; j++)
+                {
+                    BodyCellLines[i].Cells[j].Construct(m_CellsSettings);
+                }
+            }
+        }
 
-        Transform m_LastTriggeredTrans;
-        Vector2 m_PushBodyForce;
+    
         private void OnTriggerEnter2D(Collider2D collision)
         {
 
             if (collision.TryGetComponent<Projectile2D>(out _))
-            {
-              
-                m_PushBodyForce = (m_Transform.position - collision.transform.position).normalized;
-
-              
+            {              
+                m_PushBodyForce = (m_Transform.position - collision.transform.position).normalized;      
                 ActivateAllBodyCells();
-
             }
 
         }

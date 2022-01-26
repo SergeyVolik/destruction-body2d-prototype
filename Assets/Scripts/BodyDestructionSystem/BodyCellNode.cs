@@ -13,7 +13,7 @@ namespace Prototype
 
         [SerializeField] private HealthHandler m_Health;
         [SerializeField] private SpriteRenderer m_SpriteRenderer;
-        [SerializeField] private CellsSettings m_CellSettings;
+      
         [SerializeField] private BoxCollider2D m_Collider2D;
         [SerializeField] private Rigidbody2D m_Rigidbody2D;
 
@@ -25,13 +25,20 @@ namespace Prototype
 
         public BodyPart BodyPart;
         private Transform m_Transform;
+        private CellsSettings m_CellSettings;
+
         void Awake()
         {
-            m_Health.Init(100);
             m_Transform = transform;
-
             gameObject.SetActive(false);
         }
+
+        public void Construct(CellsSettings cellSettings)
+        {
+            m_CellSettings = cellSettings;
+            m_Health.Init(m_CellSettings.maxHealth);
+        }
+
 
         public void ConnectCells(BodyCellNode topCell, BodyCellNode bottomCell, BodyCellNode leftCell, BodyCellNode rightCell)
         {
@@ -61,8 +68,6 @@ namespace Prototype
                     StartCoroutine(ActivateBoxCollider(node));
                     node.m_Transform.parent = null;
                     node.KillWithDelay();
-                    Color.Lerp(m_CellSettings.minHealthColor, m_CellSettings.maxHealthColor, Random.Range(0, 1f));
-                    return;
                 }
 
                 node.m_SpriteRenderer.color = Color.Lerp(m_CellSettings.minHealthColor, m_CellSettings.maxHealthColor, node.m_Health.Health / (float)node.m_Health.MaxHealth);
@@ -82,10 +87,10 @@ namespace Prototype
         
             ApplayDamageToNode(this, dmg, damagePos);
 
-            m_TopCell?.PopulateDamage(25, horizontalDepth, damagePos);
-            m_BottomCell?.PopulateDamage(25, horizontalDepth, damagePos);
-            m_LeftCell?.PopulateDamage(25, horizontalDepth, damagePos);
-            m_RightCell?.PopulateDamage(25, horizontalDepth, damagePos);
+            //m_TopCell?.PopulateDamage(25, horizontalDepth, damagePos);
+            //m_BottomCell?.PopulateDamage(25, horizontalDepth, damagePos);
+            //m_LeftCell?.PopulateDamage(25, horizontalDepth, damagePos);
+            //m_RightCell?.PopulateDamage(25, horizontalDepth, damagePos);
 
         }
 
@@ -112,7 +117,7 @@ namespace Prototype
 
         public void Visit(CannonBall ball)
         {
-            ApplyDamage(100, ball.transform.position);
+            ApplyDamage(ball.Settings.damage, ball.transform.position);
         }
 
         public void Visit(GrenadeProjectile grenadeProjectile)
@@ -123,14 +128,14 @@ namespace Prototype
 
         public void Visit(LaserProjectile laserProjectile)
         {
-            ApplyDamage(100, laserProjectile.transform.position);
+            ApplyDamage(laserProjectile.Settings.damage, laserProjectile.transform.position);
         }
 
         public void Visit(PistolBullet pistolBullet)
         {
 
             pistolBullet.SlowBullet();
-            ApplyDamage(100, pistolBullet.transform.position);
+            ApplyDamage(pistolBullet.Settings.damage, pistolBullet.transform.position);
         }
     }
 

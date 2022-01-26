@@ -12,10 +12,14 @@ namespace Prototype
     {
 
         private CannonBall.Pool m_Pool;
+        private CannonSettings m_Settings;
+
+        public CannonSettings Settings => m_Settings;
         [Inject]
-        void Construct(CannonBall.Pool pool)
+        void Construct(CannonBall.Pool pool, CannonSettings settings)
         {
             m_Pool = pool;
+            m_Settings = settings;
         }
         protected override void Awake()
         {

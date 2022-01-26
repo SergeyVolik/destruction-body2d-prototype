@@ -68,31 +68,34 @@ namespace Prototype
     }
 
     [Serializable]
-    public class PistolSettings
+    public abstract class GunData
     {
-        public float damage;
+        public int damage;
         public float projectileSpeed;
     }
 
     [Serializable]
-    public class CannonSettings
+    public class PistolSettings : GunData
     {
-        public float damage;
-        public float projectileSpeed;
+
     }
 
     [Serializable]
-    public class LaserSettings
+    public class CannonSettings : GunData
     {
-        public float damage;
-        public float projectileSpeed;
+
     }
 
     [Serializable]
-    public class GrenadeLauncherSettings
+    public class LaserSettings : GunData
     {
-        public float damage;
-        public float projectileSpeed;
+
+    }
+
+    [Serializable]
+    public class GrenadeLauncherSettings : GunData
+    {
+
         public float explosionRange;
     }
 

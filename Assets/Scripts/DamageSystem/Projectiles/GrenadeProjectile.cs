@@ -12,6 +12,9 @@ namespace Prototype
     {
         private GrenadeProjectile.Pool m_Pool;
         private GrenadeLauncherSettings m_Settings;
+
+        public GrenadeLauncherSettings Settings => m_Settings;
+
         [Inject]
         void Construct(GrenadeProjectile.Pool pool, GrenadeLauncherSettings settings)
         {
@@ -56,7 +59,7 @@ namespace Prototype
                     if (colliders[i].TryGetComponent<IDamageable>(out var damageable))
                     {
                        
-                        damageable.ApplyDamage(100, position);
+                        damageable.ApplyDamage(m_Settings.damage, position);
                     }
                 }
 
@@ -68,7 +71,7 @@ namespace Prototype
                     if (colliders[i].TryGetComponent<IDamageable>(out var damageable))
                     {
 
-                        damageable.ApplyDamage(100, position);
+                        damageable.ApplyDamage(m_Settings.damage, position);
                     }
                 }
 

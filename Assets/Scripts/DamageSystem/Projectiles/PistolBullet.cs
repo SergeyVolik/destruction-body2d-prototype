@@ -10,13 +10,15 @@ namespace Prototype
 {
     public class PistolBullet : Projectile2D
     {
-        public float speed;
-
         private PistolBullet.Pool m_Pool;
+        private PistolSettings m_Settings;
+
+        public PistolSettings Settings => m_Settings;
         [Inject]
-        void Construct(PistolBullet.Pool pool)
+        void Construct(PistolBullet.Pool pool, PistolSettings settings)
         {
             m_Pool = pool;
+            m_Settings = settings;
         }
 
         protected override void Awake()

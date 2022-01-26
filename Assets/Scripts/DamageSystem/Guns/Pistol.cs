@@ -22,7 +22,6 @@ namespace Prototype
         {
             var speed = m_Settings.projectileSpeed;
             var bullet = m_BulletPool.Spawn();
-            bullet.speed = speed;
             var trans = bullet.transform;
             trans.rotation = m_Trasform.rotation;
             trans.position = m_BulletSpawnPoint.position;

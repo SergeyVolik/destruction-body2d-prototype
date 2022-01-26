@@ -12,11 +12,15 @@ namespace Prototype
     public class LaserProjectile : Projectile2D
     {
         private LaserProjectile.Pool m_Pool;
+        private LaserSettings m_Settings;
+
+        public LaserSettings Settings => m_Settings;
 
         [Inject]
-        void Construct(LaserProjectile.Pool pool)
+        void Construct(LaserProjectile.Pool pool, LaserSettings settings)
         {
             m_Pool = pool;
+            m_Settings = settings;
         }
 
         protected override void Awake()
